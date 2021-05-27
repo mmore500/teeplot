@@ -20,7 +20,7 @@ def tee(plotter, *args, **kwargs):
         }
     )
 
-    out_filenamer = lambda ext: kn.pack({
+    attr_maker = lambda ext: {
         **{
             slugify(k) : slugify(v)
             for k, v in kwargs.items()
@@ -31,6 +31,16 @@ def tee(plotter, *args, **kwargs):
             'viz' : slugify(plotter.__name__),
             'ext' : ext,
         },
+    }
+    out_filenamer = lambda ext: kn.pack({
+        k : v
+        for k, v in attr_maker(ext).items()
+        if not k.startswith('_')
+    })
+    out_metamaker = lambda ext: kn.pack({
+        k : v
+        for k, v in attr_maker(ext).items()
+        if k.startswith('_')
     })
 
     out_folder = 'teeplots'
@@ -41,21 +51,18 @@ def tee(plotter, *args, **kwargs):
         exist_ok=True,
     )
 
-    out_path = f'teeplots/{out_filenamer(".pdf")}'
-    print(out_path)
-    plt.savefig(
-        out_path,
-        bbox_inches='tight',
-        transparent=True,
-    )
+    for ext, dpi in ('.pdf', 'figure'), ('.png', 300):
 
-    out_path = f'teeplots/{out_filenamer(".png")}'
-    print(out_path)
-    plt.savefig(
-        out_path,
-        bbox_inches='tight',
-        transparent=True,
-        dpi=300,
-    )
+        out_path = f'teeplots/{out_filenamer(ext)}'
+        print(out_path)
+        plt.savefig(
+            out_path,
+            bbox_inches='tight',
+            transparent=True,
+            dpi=dpi,
+        )
+
+        with open(f'teeplots/{out_filenamer(ext)}.meta', 'w') as file:
+            file.write( out_metamaker(ext) )
 
     return res
