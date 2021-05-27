@@ -26,11 +26,11 @@ def tee(plotter, *args, **kwargs):
             for k, v in kwargs.items()
             if isinstance(v, str)
         },
-        **kwargs.get('teeplot_outattrs', {}),
         **{
             'viz' : slugify(plotter.__name__),
             'ext' : ext,
         },
+        **kwargs.get('teeplot_outattrs', {}),
     }
     out_filenamer = lambda ext: kn.pack({
         k : v
