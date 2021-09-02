@@ -8,18 +8,17 @@ import pathlib
 from slugify import slugify
 
 def _digest(data):
+    # adapted from https://stackoverflow.com/a/47800021
+    # and https://newbedev.com/how-to-generate-a-hash-or-checksum-value-on-python-dataframe-created-from-a-fixed-width-file
     if isinstance(data, pd.DataFrame):
-        # adapted from https://stackoverflow.com/a/47800021
         return hashlib.sha256(
-            pd.util.hash_pandas_object(data, index=True).values
+            data.to_csv(index=False).encode()
         ).hexdigest()
     elif isinstance(data, pd.core.series.Series):
-        # adapted from https://stackoverflow.com/a/47800021
         return hashlib.sha256(
-            pd.util.hash_pandas_object(data, index=True).values
+            data.to_csv(index=False).encode()
         ).hexdigest()
     elif isinstance(data, np.ndarray):
-        # adapted from https://stackoverflow.com/a/806342
         view = data.view(np.uint8)
         return hashlib.sha256(view).hexdigest()
     else:
