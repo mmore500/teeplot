@@ -35,7 +35,12 @@ def test():
             f'teeplots/additional=metadata+for=output-filename+hue=region+style=event+viz=lineplot+x=timepoint+y=signal+ext={ext}.meta',
             'r',
         ) as file:
-            assert '_datadigest=082b25134cbafade+_one-for=the-meta' in file.read()
+            assert '_one-for=the-meta' in file.read()
+        with open(
+            f'teeplots/additional=metadata+for=output-filename+hue=region+style=event+viz=lineplot+x=timepoint+y=signal+ext={ext}.meta',
+            'r',
+        ) as file:
+            assert '_datadigest=' in file.read()
 
 
 def test_ndarray():
