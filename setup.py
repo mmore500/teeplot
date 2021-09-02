@@ -13,6 +13,8 @@ with open('HISTORY.rst') as history_file:
 requirements = [
     'keyname>=0.4.1',
     'matplotlib>=3.3.2',
+    'numpy>=1.19.5',
+    'pandas>=1.1.2',
     'python-slugify>=4.0.1',
 ]
 

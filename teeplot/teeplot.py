@@ -1,8 +1,30 @@
+import hashlib
 from keyname import keyname as kn
 import matplotlib
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 import pathlib
 from slugify import slugify
+
+def _digest(data):
+    if isinstance(data, pd.DataFrame):
+        # adapted from https://stackoverflow.com/a/47800021
+        return hashlib.sha256(
+            pd.util.hash_pandas_object(data, index=True).values
+        ).hexdigest()
+    elif isinstance(data, pd.core.series.Series):
+        # adapted from https://stackoverflow.com/a/47800021
+        return hashlib.sha256(
+            pd.util.hash_pandas_object(data, index=True).values
+        ).hexdigest()
+    elif isinstance(data, np.ndarray):
+        # adapted from https://stackoverflow.com/a/806342
+        view = data.view(np.uint8)
+        return hashlib.sha256(view).hexdigest()
+    else:
+        return hashlib.sha256( data ).hexdigest()
+
 
 def tee(plotter, *args, **kwargs):
 
@@ -30,7 +52,29 @@ def tee(plotter, *args, **kwargs):
             'viz' : slugify(plotter.__name__),
             'ext' : ext,
         },
-        **kwargs.get('teeplot_outattrs', {}),
+        **{
+            k : v
+            for k, v in kwargs.get('teeplot_outattrs', {}).items()
+            if k != '_datafordigest'
+        },
+        **(
+            {'_datadigest' : _digest( kwargs['data'] )[:16]}
+            if 'data' in kwargs
+            else {'_datadigest' : _digest(
+                kwargs['teeplot_outattrs']['_datafordigest']
+            )[:16]}
+            if '_datafordigest' in kwargs.get('teeplot_outattrs', {})
+            else {'_datadigest' : _digest( np.concatenate([
+                kwargs.get('x', []),
+                kwargs.get('y', []),
+                kwargs.get('hue', []),
+                kwargs.get('size', []),
+                kwargs.get('style', []),
+            ]) )[:16]}
+            if any(q in kwargs for q in ['x', 'y', 'hue', 'size', 'style'])
+            else {}
+        ),
+
     }
     out_filenamer = lambda ext: kn.pack({
         k : v
