@@ -23,20 +23,25 @@ def test():
         teeplot_outattrs={
           'additional' : 'metadata',
           'for' : 'output-filename',
+          '_one-for' : 'the-meta',
         },
     )
 
-    assert os.path.exists(
-        'teeplots/additional=metadata+for=output-filename+hue=region+style=event+viz=lineplot+x=timepoint+y=signal+ext=.pdf',
-    )
+    for ext in '.pdf', '.png':
+        assert os.path.exists(
+            f'teeplots/additional=metadata+for=output-filename+hue=region+style=event+viz=lineplot+x=timepoint+y=signal+ext={ext}',
+        )
+        with open(
+            f'teeplots/additional=metadata+for=output-filename+hue=region+style=event+viz=lineplot+x=timepoint+y=signal+ext={ext}.meta',
+            'r',
+        ) as file:
+            assert '_datadigest=082b25134cbafade+_one-for=the-meta' in file.read()
 
-    assert os.path.exists(
-        'teeplots/additional=metadata+for=output-filename+hue=region+style=event+viz=lineplot+x=timepoint+y=signal+ext=.png',
-    )
 
 def test_ndarray():
 
     # adapted from https://seaborn.pydata.org/generated/seaborn.lineplot.html
+    np.random.seed(1)
     x, y = np.random.normal(size=(2, 5000)).cumsum(axis=1)
 
     tp.tee(
@@ -47,17 +52,20 @@ def test_ndarray():
         lw=1,
     )
 
-    assert os.path.exists(
-        'teeplots/viz=lineplot+ext=.pdf',
-    )
-
-    assert os.path.exists(
-        'teeplots/viz=lineplot+ext=.png',
-    )
+    for ext in '.pdf', '.png':
+        assert os.path.exists(
+            f'teeplots/viz=lineplot+ext={ext}',
+        )
+        with open(
+            f'teeplots/viz=lineplot+ext={ext}.meta',
+            'r',
+        ) as file:
+            assert '_datadigest=011789ddade2f359' in file.read()
 
 def test_datafordigest():
 
     # adapted from https://seaborn.pydata.org/generated/seaborn.lineplot.html
+    np.random.seed(1)
     x, y = np.random.normal(size=(2, 5000)).cumsum(axis=1)
 
     tp.tee(
@@ -72,10 +80,13 @@ def test_datafordigest():
         },
     )
 
-    assert os.path.exists(
-        'teeplots/additional=metadata+viz=lineplot+ext=.pdf',
-    )
+    for ext in '.pdf', '.png':
+        assert os.path.exists(
+            f'teeplots/additional=metadata+viz=lineplot+ext={ext}',
+        )
 
-    assert os.path.exists(
-        'teeplots/additional=metadata+viz=lineplot+ext=.png',
-    )
+        with open(
+            f'teeplots/additional=metadata+viz=lineplot+ext={ext}.meta',
+            'r',
+        ) as file:
+            assert '_datadigest=1053487e16d654f6' in file.read()
