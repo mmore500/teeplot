@@ -36,6 +36,8 @@ def test():
             'r',
         ) as file:
             assert '_one-for=the-meta' in file.read()
+        # don't assert the exact digest,
+        # because the fmri dataset appears to vary between versions?
         with open(
             f'teeplots/additional=metadata+for=output-filename+hue=region+style=event+viz=lineplot+x=timepoint+y=signal+ext={ext}.meta',
             'r',

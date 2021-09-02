@@ -9,9 +9,8 @@ from slugify import slugify
 
 def _digest(data):
 
-    # inconsistent between python versions
-    # also tried https://newbedev.com/how-to-generate-a-hash-or-checksum-value-on-python-dataframe-created-from-a-fixed-width-file
-    # which also lacks consistency between python versions
+    # also considered https://newbedev.com/how-to-generate-a-hash-or-checksum-value-on-python-dataframe-created-from-a-fixed-width-file
+    # which is slower
     if isinstance(data, pd.DataFrame):
         # adapted from https://stackoverflow.com/a/47800021
         return hashlib.sha256(
