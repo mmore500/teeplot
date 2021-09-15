@@ -113,7 +113,7 @@ def test_outpath():
         teeplot_outattrs={
           'additional' : 'metadata',
         },
-        teeplot_outdir='mydirectory',
+        teeplot_subdir='mydirectory',
     )
 
     for ext in '.pdf', '.png':

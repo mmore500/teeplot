@@ -91,7 +91,7 @@ def tee(plotter, *args, **kwargs):
         if k.startswith('_')
     })
 
-    out_folder = f'teeplots/{kwargs.get("teeplot_outdir", ".")}'
+    out_folder = f'teeplots/{kwargs.get("teeplot_subdir", ".")}'
     pathlib.Path(
         out_folder,
     ).mkdir(
