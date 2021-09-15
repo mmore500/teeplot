@@ -30,7 +30,7 @@ def _digest(data):
         return hashlib.sha256( data ).hexdigest()
 
 
-def tee(plotter, *args, **kwargs):
+def tee(plotter, *args, teeplot_outattrs={}, teeplot_subdir='.', **kwargs):
 
     # enable TrueType fonts
     # see https://gecco-2021.sigevo.org/Paper-Submission-Instructions
@@ -42,7 +42,6 @@ def tee(plotter, *args, **kwargs):
         **{
             k : v
             for k, v in kwargs.items()
-            if not re.match(r'^teeplot_', k)
         }
     )
 
@@ -50,7 +49,7 @@ def tee(plotter, *args, **kwargs):
         **{
             slugify(k) : slugify(v)
             for k, v in kwargs.items()
-            if isinstance(v, str) and not re.match(r'^teeplot_', k)
+            if isinstance(v, str)
         },
         **{
             'viz' : slugify(plotter.__name__),
@@ -58,16 +57,16 @@ def tee(plotter, *args, **kwargs):
         },
         **{
             k : v
-            for k, v in kwargs.get('teeplot_outattrs', {}).items()
+            for k, v in teeplot_outattrs.items()
             if k != '_datafordigest'
         },
         **(
             {'_datadigest' : _digest( kwargs['data'] )[:16]}
             if 'data' in kwargs
             else {'_datadigest' : _digest(
-                kwargs['teeplot_outattrs']['_datafordigest']
+                teeplot_outattrs['_datafordigest']
             )[:16]}
-            if '_datafordigest' in kwargs.get('teeplot_outattrs', {})
+            if '_datafordigest' in teeplot_outattrs
             else {'_datadigest' : _digest( np.concatenate([
                 kwargs.get('x', []),
                 kwargs.get('y', []),
@@ -91,7 +90,7 @@ def tee(plotter, *args, **kwargs):
         if k.startswith('_')
     })
 
-    out_folder = f'teeplots/{kwargs.get("teeplot_subdir", ".")}'
+    out_folder = f'teeplots/{teeplot_subdir}'
     pathlib.Path(
         out_folder,
     ).mkdir(
