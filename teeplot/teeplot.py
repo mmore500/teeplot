@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pathlib
+import re
 from slugify import slugify
 
 def _digest(data):
@@ -41,7 +42,7 @@ def tee(plotter, *args, **kwargs):
         **{
             k : v
             for k, v in kwargs.items()
-            if k != 'teeplot_outattrs'
+            if not re.match(r'^teeplot_', k)
         }
     )
 
@@ -49,7 +50,7 @@ def tee(plotter, *args, **kwargs):
         **{
             slugify(k) : slugify(v)
             for k, v in kwargs.items()
-            if isinstance(v, str)
+            if isinstance(v, str) and not re.match(r'^teeplot_', k)
         },
         **{
             'viz' : slugify(plotter.__name__),
@@ -90,7 +91,7 @@ def tee(plotter, *args, **kwargs):
         if k.startswith('_')
     })
 
-    out_folder = 'teeplots'
+    out_folder = f'teeplots/{kwargs.get("teeplot_outdir", ".")}'
     pathlib.Path(
         out_folder,
     ).mkdir(
@@ -100,7 +101,7 @@ def tee(plotter, *args, **kwargs):
 
     for ext, dpi in ('.pdf', 'figure'), ('.png', 300):
 
-        out_path = f'teeplots/{out_filenamer(ext)}'
+        out_path = f'{out_folder}/{out_filenamer(ext)}'
         print(out_path)
         plt.savefig(
             out_path,
@@ -109,7 +110,7 @@ def tee(plotter, *args, **kwargs):
             dpi=dpi,
         )
 
-        with open(f'teeplots/{out_filenamer(ext)}.meta', 'w') as file:
+        with open(f'{out_path}.meta', 'w') as file:
             file.write( out_metamaker(ext) )
 
     return res

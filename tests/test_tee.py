@@ -97,3 +97,29 @@ def test_datafordigest():
             'r',
         ) as file:
             assert '_datadigest=1053487e16d654f6' in file.read()
+
+def test_outpath():
+
+    # adapted from https://seaborn.pydata.org/generated/seaborn.lineplot.html
+    np.random.seed(1)
+    x, y = np.random.normal(size=(2, 5000)).cumsum(axis=1)
+
+    tp.tee(
+        sns.lineplot,
+        x=x,
+        y=y,
+        sort=False,
+        lw=1,
+        teeplot_outattrs={
+          'additional' : 'metadata',
+        },
+        teeplot_outdir='mydirectory',
+    )
+
+    for ext in '.pdf', '.png':
+        assert os.path.exists(
+            f'teeplots/mydirectory/additional=metadata+viz=lineplot+ext={ext}',
+        )
+        assert os.path.exists(
+            f'teeplots/mydirectory/additional=metadata+viz=lineplot+ext={ext}.meta',
+        )
