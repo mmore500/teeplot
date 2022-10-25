@@ -8,8 +8,6 @@ alabaster==0.7.12
     # via sphinx
 argh==0.26.2
     # via watchdog
-atomicwrites==1.4.0
-    # via pytest
 attrs==21.4.0
     # via pytest
 babel==2.9.1
@@ -45,8 +43,9 @@ idna==3.3
     # via requests
 imagesize==1.3.0
     # via sphinx
-importlib-metadata==0.23
+importlib-metadata==1.6.1
     # via
+    #   -r requirements_dev.in
     #   pluggy
     #   pytest
     #   tox
@@ -80,7 +79,7 @@ packaging==21.3
     #   pytest
     #   sphinx
     #   tox
-pandas==0.23.4
+pandas==1.0.0
     # via
     #   -r requirements_dev.in
     #   seaborn
@@ -114,9 +113,7 @@ pyparsing==3.0.7
     # via
     #   matplotlib
     #   packaging
-pytest==4.6.5
-    # via -r requirements_dev.in
-pytest-runner==5.1
+pytest==5.4.3
     # via -r requirements_dev.in
 python-dateutil==2.8.2
     # via
@@ -144,7 +141,6 @@ seaborn==0.11.2
 six==1.16.0
     # via
     #   bleach
-    #   pytest
     #   python-dateutil
     #   sphinx
     #   tox
@@ -159,7 +155,7 @@ sphinxcontrib-websupport==1.2.4
     # via sphinx
 toml==0.10.2
     # via tox
-tox==3.14.0
+tox==3.26.0
     # via -r requirements_dev.in
 tqdm==4.62.3
     # via twine
@@ -184,5 +180,4 @@ zipp==3.6.0
     #   importlib-resources
 
 # The following packages are considered to be unsafe in a requirements file:
-# pip
 # setuptools
