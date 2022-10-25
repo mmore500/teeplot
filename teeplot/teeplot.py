@@ -30,7 +30,14 @@ def _digest(data):
         return hashlib.sha256( data ).hexdigest()
 
 
-def tee(plotter, *args, teeplot_outattrs={}, teeplot_subdir='.', **kwargs):
+def tee(
+    plotter,
+    *args,
+    teeplot_outattrs={},
+    teeplot_subdir='.',
+    teeplot_transparent=True,
+    **kwargs
+):
 
     # enable TrueType fonts
     # see https://gecco-2021.sigevo.org/Paper-Submission-Instructions
@@ -105,7 +112,7 @@ def tee(plotter, *args, teeplot_outattrs={}, teeplot_subdir='.', **kwargs):
         plt.savefig(
             out_path,
             bbox_inches='tight',
-            transparent=True,
+            transparent=teeplot_transparent,
             dpi=dpi,
         )
 
