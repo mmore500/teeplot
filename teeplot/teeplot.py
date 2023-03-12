@@ -107,7 +107,10 @@ def tee(
 
     for ext, dpi in ('.pdf', 'figure'), ('.png', 300):
 
-        out_path = f'{out_folder}/{out_filenamer(ext)}'
+        out_path = kn.chop(
+            f'{out_folder}/{out_filenamer(ext)}',
+            mkdir=True,
+        )
         print(out_path)
         plt.savefig(
             out_path,

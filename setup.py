@@ -11,7 +11,7 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
-    'keyname>=0.4.1',
+    'keyname>=0.5.2',
     'matplotlib>=3.3.2',
     'numpy>=1.19.5',
     'pandas>=1.1.2',
