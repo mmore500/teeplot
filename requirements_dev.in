@@ -1,17 +1,17 @@
 bump2version==0.5.11
 wheel==0.33.6
-watchdog==0.9.0
+watchdog>=0.9.0
 flake8==3.7.8
 tox==3.26.0
-coverage==4.5.4
+coverage>=4.5.4
 Sphinx==1.8.5
 twine==1.14.0
 seaborn==0.11.2
 keyname==0.5.2
-matplotlib==3.3.2
+matplotlib>=3.3.2
 numpy>=1.21.6
 pandas>=1.1.2
-python-slugify==4.0.1
+python-slugify>=4.0.1
 pytest==7.2.2
 
 filelock==3.4.1
