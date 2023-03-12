@@ -36,6 +36,7 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
     ],
     description="teeplot automatically saves a copy of rendered Jupyter notebook plots",
     install_requires=requirements,
