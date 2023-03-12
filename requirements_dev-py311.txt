@@ -51,6 +51,8 @@ imagesize==1.4.1
     # via sphinx
 importlib-metadata==4.8.3
     # via -r requirements_dev.in
+iniconfig==2.0.0
+    # via pytest
 jinja2==3.1.2
     # via sphinx
 keyname==0.5.2
@@ -68,9 +70,7 @@ matplotlib==3.3.2
 mccabe==0.6.1
     # via flake8
 more-itertools==9.1.0
-    # via
-    #   keyname
-    #   pytest
+    # via keyname
 numpy==1.24.2
     # via
     #   -r requirements_dev.in
@@ -103,7 +103,6 @@ pluggy==0.13.1
     #   tox
 py==1.11.0
     # via
-    #   pytest
     #   retry
     #   tox
 pycodestyle==2.5.0
@@ -116,7 +115,7 @@ pygments==2.14.0
     #   sphinx
 pyparsing==3.0.9
     # via matplotlib
-pytest==5.4.3
+pytest==7.2.2
     # via -r requirements_dev.in
 python-dateutil==2.8.2
     # via
@@ -171,8 +170,6 @@ virtualenv==20.20.0
     # via tox
 watchdog==0.9.0
     # via -r requirements_dev.in
-wcwidth==0.2.6
-    # via pytest
 webencodings==0.5.1
     # via bleach
 wheel==0.33.6
