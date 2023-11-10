@@ -3,6 +3,7 @@ from keyname import keyname as kn
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 import pandas as pd
 import pathlib
 from slugify import slugify
@@ -27,6 +28,12 @@ def _digest(data):
         return hashlib.sha256(view).hexdigest()
     else:
         return hashlib.sha256( data ).hexdigest()
+
+
+def _is_running_on_ci():
+    ci_envs = ['CI', 'TRAVIS', 'GITHUB_ACTIONS', 'GITLAB_CI', 'JENKINS_URL']
+
+    return any(os.getenv(env) for env in ci_envs)
 
 
 def tee(
@@ -105,6 +112,13 @@ def tee(
     )
 
     for ext, dpi in ('.pdf', 'figure'), ('.png', 300):
+
+        if os.getenv("TEEPLOT_DRAFT_MODE") or (
+            _is_running_on_ci()
+            and ext == ".png"
+        ):
+            # skip rasterized image output on CI
+            continue
 
         out_path = kn.chop(
             f'{out_folder}/{out_filenamer(ext)}',
