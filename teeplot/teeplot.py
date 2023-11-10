@@ -32,18 +32,33 @@ def _digest(data):
 
 def _is_running_on_ci():
     ci_envs = ['CI', 'TRAVIS', 'GITHUB_ACTIONS', 'GITLAB_CI', 'JENKINS_URL']
-
-    return any(os.getenv(env) for env in ci_envs)
+    return any(env in os.environ for env in ci_envs)
 
 
 def tee(
     plotter,
     *args,
     teeplot_outattrs={},
+    teeplot_save=None,
     teeplot_subdir='.',
     teeplot_transparent=True,
     **kwargs
 ):
+
+    if teeplot_save is None:
+        if "TEEPLOT_DRAFT_MODE" in os.environ:
+            teeplot_save = {}
+        elif _is_running_on_ci():
+            teeplot_save = {".pdf"}
+        else:
+            teeplot_save = {".pdf", ".png"}
+    elif teeplot_save is False:
+        teeplot_save = {}
+    elif teeplot_save is True:
+        if _is_running_on_ci():
+            teeplot_save = {".pdf"}
+        else:
+            teeplot_save = {".pdf", ".png"}
 
     # enable TrueType fonts
     # see https://gecco-2021.sigevo.org/Paper-Submission-Instructions
@@ -117,12 +132,9 @@ def tee(
             f'{out_folder}/{out_filenamer(ext)}',
             mkdir=True,
         )
-        if os.getenv("TEEPLOT_DRAFT_MODE") or (
-            _is_running_on_ci()
-            and ext == ".png"
-        ):
+
+        if ext not in teeplot_save:
             print(f"skipping {out_path}")
-            # skip rasterized image output on CI
             continue
 
         print(out_path)
