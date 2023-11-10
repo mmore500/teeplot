@@ -113,17 +113,18 @@ def tee(
 
     for ext, dpi in ('.pdf', 'figure'), ('.png', 300):
 
-        if os.getenv("TEEPLOT_DRAFT_MODE") or (
-            _is_running_on_ci()
-            and ext == ".png"
-        ):
-            # skip rasterized image output on CI
-            continue
-
         out_path = kn.chop(
             f'{out_folder}/{out_filenamer(ext)}',
             mkdir=True,
         )
+        if os.getenv("TEEPLOT_DRAFT_MODE") or (
+            _is_running_on_ci()
+            and ext == ".png"
+        ):
+            print(f"skipping {out_path}")
+            # skip rasterized image output on CI
+            continue
+
         print(out_path)
         plt.savefig(
             out_path,
