@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pathlib
-import re
 from slugify import slugify
 
 def _digest(data):
