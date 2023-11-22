@@ -39,6 +39,7 @@ def tee(
     plotter,
     *args,
     teeplot_outattrs={},
+    teeplot_outdir="teeplots",
     teeplot_save=None,
     teeplot_subdir='.',
     teeplot_transparent=True,
@@ -118,7 +119,7 @@ def tee(
         if k.startswith('_')
     })
 
-    out_folder = f'teeplots/{teeplot_subdir}'
+    out_folder = f'{teeplot_outdir}/{teeplot_subdir}'
     pathlib.Path(
         out_folder,
     ).mkdir(
