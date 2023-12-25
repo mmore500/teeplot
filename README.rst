@@ -16,7 +16,7 @@ teeplot
 
 
 
-teeplot automatically saves a copy of rendered Jupyter notebook plots
+teeplot organizes saving data visualizations, automatically picking meaningful names based on semantic plotting variables
 
 
 * Free software: MIT license
