@@ -1,6 +1,6 @@
-============
-teeplot
-============
+.. figure:: docs/assets/teeplot-wordmark.png
+   :target: https://github.com/mmore500/teeplot
+   :alt: teeplot wordmark
 
 
 .. image:: https://img.shields.io/pypi/v/teeplot.svg
