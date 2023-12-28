@@ -1,8 +1,9 @@
-from collections import abc
+from collections import abc, Counter
 import copy
 import os
 import pathlib
 import typing
+import warnings
 
 from keyname import keyname as kn
 import matplotlib
@@ -17,6 +18,12 @@ def _is_running_on_ci() -> bool:
 
 draft_mode: bool = False
 
+oncollision: typing.Literal["error", "fix", "ignore", "warn"] = os.environ.get("TEEPLOT_ONCOLLISION", "warn").lower()
+if not oncollision in ("error", "fix", "ignore", "warn"):
+    raise RuntimeError(
+        f"invalid env var value TEEPLOT_ONCOLLISION={oncollision}",
+    )
+
 save = {
     ".pdf": True,
     ".png": True if not _is_running_on_ci() else None,
@@ -26,9 +33,13 @@ save = {
 True enables format globally and False disables.
 None defers to teeplot_save kwarg."""
 
+_history = Counter()
+
 def tee(
     plotter: typing.Callable[..., typing.Any],
     *args: typing.Any,
+    teeplot_oncollision: typing.Optional[
+        typing.Literal["error", "fix", "ignore", "warn"]] = None,
     teeplot_outattrs: typing.Dict[str, str] = {},
     teeplot_outdir: str = "teeplots",
     teeplot_save: typing.Optional[typing.Iterable[str]] = None,
@@ -115,6 +126,9 @@ def tee(
             f"not {type(teeplot_save)} {teeplot_save}",
         )
 
+    if teeplot_oncollision is None:
+        teeplot_oncollision = oncollision
+
     # enable TrueType fonts
     # see https://gecco-2021.sigevo.org/Paper-Submission-Instructions
     matplotlib.rcParams['pdf.fonttype'] = 42
@@ -157,6 +171,27 @@ def tee(
                 mkdir=True,
             ),
         )
+
+        if out_path in _history:
+            if teeplot_oncollision == "error":
+                raise RuntimeError(f"teeplot already created file {out_path}")
+            elif teeplot_oncollision == "fix":
+                count = _history[out_path]
+                suffix = f"ext={ext}"
+                assert str(out_path).endswith(suffix)
+                out_path = str(out_path)[:-len(suffix)] + f"#={count}+" + suffix
+            elif teeplot_oncollision == "ignore":
+                pass
+            elif teeplot_oncollision == "warn":
+                warnings.warn(
+                    f"teeplot already created file {out_path}, overwriting it",
+                )
+            else:
+                raise ValueError(
+                    "teeplot_oncollision must be one of 'error', 'fix', "
+                    f"'ignore', or 'warn', not {teeplot_oncollision}",
+                )
+        _history[out_path] += 1
 
         if ext not in teeplot_save:
             if teeplot_verbose:

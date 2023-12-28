@@ -127,3 +127,82 @@ def test_longname():
                     }) + f'+viz=lineplot+ext={ext}'),
             )
         )
+
+@pytest.mark.parametrize("oncollision", ["warn", "ignore"])
+def test_oncollision_warn_ignore(oncollision: str):
+
+    # adapted from https://seaborn.pydata.org/generated/seaborn.lineplot.html
+    np.random.seed(1)
+    x, y = np.random.normal(size=(2, 5000)).cumsum(axis=1)
+
+    for i in range(2):
+        tp.tee(
+            sns.lineplot,
+            x=x,
+            y=y,
+            sort=False,
+            lw=i+1,
+            teeplot_oncollision=oncollision,
+            teeplot_outattrs={
+            'additional' : 'metadata',
+            },
+            teeplot_subdir='mydirectory',
+        )
+
+    for ext in '.pdf', '.png':
+        assert os.path.exists(
+            os.path.join('teeplots', 'mydirectory', f'additional=metadata+viz=lineplot+ext={ext}'),
+        )
+
+
+def test_oncollision_error():
+
+    # adapted from https://seaborn.pydata.org/generated/seaborn.lineplot.html
+    np.random.seed(1)
+    x, y = np.random.normal(size=(2, 5000)).cumsum(axis=1)
+
+    with pytest.raises(RuntimeError):
+        for i in range(2):
+            tp.tee(
+                sns.lineplot,
+                x=x,
+                y=y,
+                sort=False,
+                lw=i+1,
+                teeplot_oncollision="error",
+                teeplot_outattrs={
+                'additional' : 'metadata',
+                },
+                teeplot_subdir='mydirectory',
+            )
+
+    for ext in '.pdf', '.png':
+        assert os.path.exists(
+            os.path.join('teeplots', 'mydirectory', f'additional=metadata+viz=lineplot+ext={ext}'),
+        )
+
+
+def test_oncollision_fix():
+
+    # adapted from https://seaborn.pydata.org/generated/seaborn.lineplot.html
+    np.random.seed(1)
+    x, y = np.random.normal(size=(2, 5000)).cumsum(axis=1)
+
+    for i in range(2):
+        tp.tee(
+            sns.lineplot,
+            x=x,
+            y=y,
+            sort=False,
+            lw=i+1,
+            teeplot_oncollision="fix",
+            teeplot_outattrs={
+            'additional' : 'metadata__',
+            },
+            teeplot_subdir='mydirectory',
+        )
+
+    for ext in '.pdf', '.png':
+        assert os.path.exists(
+            os.path.join('teeplots', 'mydirectory', f'additional=metadata__+viz=lineplot+#=1+ext={ext}'),
+        )
