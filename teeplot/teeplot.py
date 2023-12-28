@@ -59,8 +59,10 @@ def tee(
 
     Notes
     -----
-    - The output filename is generated based on the `plotter` function name and the provided attributes.
-    - The function will create directories as needed based on the specified output paths.
+    - The output filename is generated based on the `plotter` function name and
+      the provided attributes.
+    - The function will create directories as needed based on the specified
+      output paths.
     """
     if teeplot_save is None:
         if "TEEPLOT_DRAFT_MODE" in os.environ:
