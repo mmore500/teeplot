@@ -77,10 +77,10 @@ def tee(
         teeplot_save = {*teeplot_save}
 
     if "TEEPLOT_PNG" in os.environ:
-        teeplot_save += ".png"
+        teeplot_save.add(".png")
 
     if "TEEPLOT_PDF" in os.environ:
-        teeplot_save += ".pdf"
+        teeplot_save.add(".pdf")
 
     # enable TrueType fonts
     # see https://gecco-2021.sigevo.org/Paper-Submission-Instructions
