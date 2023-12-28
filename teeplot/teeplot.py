@@ -111,19 +111,16 @@ def tee(
         if not k.startswith('_')
     })
 
-    out_folder = f'{teeplot_outdir}/{teeplot_subdir}'
-    pathlib.Path(
-        out_folder,
-    ).mkdir(
-        parents=True,
-        exist_ok=True,
-    )
+    out_folder = pathlib.Path(teeplot_outdir, teeplot_subdir)
+    out_folder.mkdir(parents=True, exist_ok=True)
 
     for ext, dpi in ('.pdf', 'figure'), ('.png', 300):
 
-        out_path = kn.chop(
-            f'{out_folder}/{out_filenamer(ext)}',
-            mkdir=True,
+        out_path = pathlib.Path(
+            kn.chop(
+                str(out_folder / out_filenamer(ext)),
+                mkdir=True,
+            ),
         )
 
         if ext not in teeplot_save:
@@ -132,7 +129,7 @@ def tee(
 
         print(out_path)
         plt.savefig(
-            out_path,
+            str(out_path),
             bbox_inches='tight',
             transparent=teeplot_transparent,
             dpi=dpi,
