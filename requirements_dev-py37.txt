@@ -81,7 +81,6 @@ more-itertools==9.1.0
     # via keyname
 numpy==1.21.6
     # via
-    #   -r requirements_dev.in
     #   matplotlib
     #   pandas
     #   scipy
@@ -93,9 +92,7 @@ packaging==23.0
     #   sphinx
     #   tox
 pandas==1.1.2
-    # via
-    #   -r requirements_dev.in
-    #   seaborn
+    # via seaborn
 pathtools==0.1.2
     # via watchdog
 pillow==9.4.0
