@@ -6,14 +6,8 @@
 .. image:: https://img.shields.io/pypi/v/teeplot.svg
         :target: https://pypi.python.org/pypi/teeplot
 
-.. image:: https://img.shields.io/travis/mmore500/teeplot.svg
-        :target: https://travis-ci.com/mmore500/teeplot
-
-.. image:: https://readthedocs.org/projects/teeplot/badge/?version=latest
-        :target: https://teeplot.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
-
-
+.. image:: https://github.com/mmore500/teeplot/actions/workflows/CI.yml/badge.svg
+        :target: https://github.com/mmore500/teeplot/actions/workflows/CI.yml
 
 
 teeplot organizes saving data visualizations, automatically picking meaningful names based on semantic plotting variables
