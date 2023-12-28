@@ -42,7 +42,7 @@ def tee(
         A set of strings indicating which file formats to save the plots.
 
         Defaults to `.pdf` and `.png` unless running on CI, where it defaults
-        to `.pdf`.
+        to `.pdf`. Only supported formats are `.pdf` and `.png`.
     teeplot_subdir : str, default ""
         The subdirectory within `teeplot_outdir` to save plots.
     teeplot_transparent : bool, default True
@@ -80,6 +80,13 @@ def tee(
             teeplot_save = {".pdf", ".png"}
     else:
         teeplot_save = {*teeplot_save}
+
+    supported_formats = {".pdf", ".png"}
+    if not teeplot_save <= supported_formats:
+        raise ValueError(
+            f"only {supported_formats} save formats are supported, "
+            f"not {teeplot_save - supported_formats}",
+        )
 
     if "TEEPLOT_PNG" in os.environ:
         teeplot_save.add(".png")
