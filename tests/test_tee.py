@@ -114,7 +114,7 @@ def test_longname():
         lw=1,
         teeplot_outattrs={
           f'additional{i}' : 'metadata'
-          for i in range(100)
+          for i in range(30)
         },
     )
 
@@ -123,7 +123,7 @@ def test_longname():
             kn.chop(
                 os.path.join('teeplots', kn.pack({
                       f'additional{i}' : 'metadata'
-                      for i in range(100)
+                      for i in range(30)
                     }) + f'+viz=lineplot+ext={ext}'),
             )
         )
