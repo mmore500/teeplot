@@ -13,6 +13,13 @@ def _is_running_on_ci() -> bool:
     ci_envs = ['CI', 'TRAVIS', 'GITHUB_ACTIONS', 'GITLAB_CI', 'JENKINS_URL']
     return any(env in os.environ for env in ci_envs)
 
+save = {
+    ".pdf": None,
+    ".png": None,
+}
+"""Global format output defaults.
+
+True enables format globally and False disables."""
 
 def tee(
     plotter: typing.Callable[..., typing.Any],
@@ -95,6 +102,11 @@ def tee(
                 teeplot_save.add(f".{format}")
             else:
                 teeplot_save.discatd(f".{format}")
+        if save.get(f".{format}", None) is not None:
+            if save[f".{format}"]:
+                teeplot_save.add(f".{format}")
+            else:
+                teeplot_save.discard(f".{format}")
 
     # enable TrueType fonts
     # see https://gecco-2021.sigevo.org/Paper-Submission-Instructions
