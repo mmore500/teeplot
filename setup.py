@@ -11,9 +11,9 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
-    'keyname>=0.5.2',
-    'matplotlib>=3.3.2',
-    'python-slugify>=4.0.1',
+    'keyname',
+    'matplotlib',
+    'python-slugify',
     'distutils-strtobool'
 ]
 
