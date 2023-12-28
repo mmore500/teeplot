@@ -203,6 +203,11 @@ def tee(
                 "or call signature incompatible with attempted invocations",
             )
     elif teeplot_postprocess:
+        if not isinstance(teeplot_postprocess, str):
+            raise TypeError(
+                "teeplot_postprocess must be str or Callable, "
+                f"not {type(teeplot_postprocess)} {teeplot_postprocess}"
+            )
         try:
             import seaborn as sns
             import seaborn
