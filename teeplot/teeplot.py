@@ -61,13 +61,13 @@ def tee(
     """
     if teeplot_save is None:
         if "TEEPLOT_DRAFT_MODE" in os.environ:
-            teeplot_save = {}
+            teeplot_save = set()
         elif _is_running_on_ci():
             teeplot_save = {".pdf"}
         else:
             teeplot_save = {".pdf", ".png"}
     elif teeplot_save is False:
-        teeplot_save = {}
+        teeplot_save = set()
     elif teeplot_save is True:
         if _is_running_on_ci():
             teeplot_save = {".pdf"}
