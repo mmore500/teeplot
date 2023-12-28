@@ -167,9 +167,11 @@ def tee(
                 f"not {teeplot_save}",
             )
         # remove explicitly disabled outputs
-        teeplot_save = {teeplot_save} - set(
-            k for k, v in formats.items() if v is False
-        )
+        blacklist = set(k for k, v in formats.items() if v is False)
+        exclusions =  {teeplot_save} | blacklist
+        if teeplot_verbose and exclusions:
+            print(f"skipping {exclusions}")
+        teeplot_save = {teeplot_save} - exclusions
 
     elif isinstance(teeplot_save, abc.Iterable):
         if not {*teeplot_save} <= {*formats}:
@@ -178,9 +180,11 @@ def tee(
                 f"not {list({*teeplot_save} - {*formats})}",
             )
         # remove explicitly disabled outputs
-        teeplot_save = (
-            set(teeplot_save) - set(k for k, v in formats.items() if v is False)
-        )
+        blacklist = set(k for k, v in formats.items() if v is False)
+        exclusions =  set(teeplot_save) | blacklist
+        if teeplot_verbose and exclusions:
+            print(f"skipping {exclusions}")
+        teeplot_save = set(teeplot_save) - exclusions
     else:
         raise TypeError(
             "teeplot_save kwarg must be None, bool, or iterable, "
