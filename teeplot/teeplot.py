@@ -18,7 +18,7 @@ def tee(
     *args: typing.Any,
     teeplot_outattrs: typing.Dict[str, str] = {},
     teeplot_outdir: str = "teeplots",
-    teeplot_save: typing.Optional[typing.Set[str]] = None,
+    teeplot_save: typing.Optional[typing.Iterable[str]] = None,
     teeplot_subdir: str = '.',
     teeplot_transparent: bool = True,
     **kwargs: typing.Any
@@ -37,7 +37,7 @@ def tee(
         Additional key-value information to include in the output filename.
     teeplot_outdir : str, default "teeplots"
         The base directory where plots will be saved.
-    teeplot_save : Set[str], optional
+    teeplot_save : Iterable[str], optional
         A set of strings indicating which file formats to save the plots.
 
         Defaults to `.pdf` and `.png` unless running on CI, where it defaults
@@ -73,6 +73,8 @@ def tee(
             teeplot_save = {".pdf"}
         else:
             teeplot_save = {".pdf", ".png"}
+    else:
+        teeplot_save = {*teeplot_save}
 
     if "TEEPLOT_PNG" in os.environ:
         teeplot_save += ".png"
