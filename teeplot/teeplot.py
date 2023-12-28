@@ -19,7 +19,7 @@ def tee(
     teeplot_outattrs: typing.Dict[str, str] = {},
     teeplot_outdir: str = "teeplots",
     teeplot_save: typing.Optional[typing.Iterable[str]] = None,
-    teeplot_subdir: str = '.',
+    teeplot_subdir: str = '',
     teeplot_transparent: bool = True,
     teeplot_verbose: bool = True,
     **kwargs: typing.Any
@@ -43,7 +43,7 @@ def tee(
 
         Defaults to `.pdf` and `.png` unless running on CI, where it defaults
         to `.pdf`.
-    teeplot_subdir : str, ./
+    teeplot_subdir : str, default ""
         The subdirectory within `teeplot_outdir` to save plots.
     teeplot_transparent : bool, default True
         Whether to save the plot with a transparent background.
