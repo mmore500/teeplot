@@ -30,7 +30,7 @@ def test():
 
     for ext in '.pdf', '.png':
         assert os.path.exists(
-            f'teeplots/additional=metadata+for=output-filename+hue=region+style=event+viz=lineplot+x=timepoint+y=signal+ext={ext}',
+            os.path.join('teeplots', f'additional=metadata+for=output-filename+hue=region+style=event+viz=lineplot+x=timepoint+y=signal+ext={ext}'),
         )
 
 
@@ -50,7 +50,7 @@ def test_ndarray():
 
     for ext in '.pdf', '.png':
         assert os.path.exists(
-            f'teeplots/viz=lineplot+ext={ext}',
+            os.path.join('teeplots', f'viz=lineplot+ext={ext}'),
         )
 
 def test_datafordigest():
@@ -73,7 +73,7 @@ def test_datafordigest():
 
     for ext in '.pdf', '.png':
         assert os.path.exists(
-            f'teeplots/additional=metadata+viz=lineplot+ext={ext}',
+            os.path.join('teeplots', f'additional=metadata+viz=lineplot+ext={ext}'),
         )
 
 
@@ -97,7 +97,7 @@ def test_outpath():
 
     for ext in '.pdf', '.png':
         assert os.path.exists(
-            f'teeplots/mydirectory/additional=metadata+viz=lineplot+ext={ext}',
+            os.path.join('teeplots', 'mydirectory', f'additional=metadata+viz=lineplot+ext={ext}'),
         )
 
 def test_longname():
@@ -121,11 +121,9 @@ def test_longname():
     for ext in '.pdf', '.png':
         assert os.path.exists(
             kn.chop(
-                f'''teeplots/{
-                    kn.pack({
+                os.path.join('teeplots', kn.pack({
                       f'additional{i}' : 'metadata'
                       for i in range(100)
-                    })
-                }+viz=lineplot+ext={ext}''',
+                    }) + f'+viz=lineplot+ext={ext}'),
             )
         )
