@@ -1,3 +1,5 @@
+from collections import abc
+import copy
 import os
 import pathlib
 import typing
@@ -16,12 +18,13 @@ def _is_running_on_ci() -> bool:
 draft_mode: bool = False
 
 save = {
-    ".pdf": None,
-    ".png": None,
+    ".pdf": True,
+    ".png": True if not _is_running_on_ci() else None,
 }
 """Global format output defaults.
 
-True enables format globally and False disables."""
+True enables format globally and False disables.
+None defers to teeplot_save kwarg."""
 
 def tee(
     plotter: typing.Callable[..., typing.Any],
@@ -74,41 +77,43 @@ def tee(
     - The function will create directories as needed based on the specified
       output paths.
     """
-    if teeplot_save is None:
-        if "TEEPLOT_DRAFT_MODE" in os.environ or draft_mode:
-            teeplot_save = set()
-        elif _is_running_on_ci():
-            teeplot_save = {".pdf"}
-        else:
-            teeplot_save = {".pdf", ".png"}
-    elif teeplot_save is False:
+    formats = copy.copy(save)
+
+    # incorporate environment variable settings
+    for format in [*formats]:
+        format_env_var = f"TEEPLOT_{format[1:].upper()}"
+        if format_env_var in os.environ:  # strip leading .
+            format_env_value = os.environ[format_env_var]
+            if format_env_value.lower() in ("none", "defer"):
+                formats[format] = None
+            else:
+                formats[format] = strtobool(format_env_value)
+
+    if teeplot_save is None or teeplot_save is True:
+        # default formats
+        teeplot_save = set(filter(formats.__getitem__, formats))
+    elif (
+        teeplot_save is False
+        or "TEEPLOT_DRAFT_MODE" in os.environ
+        or draft_mode
+    ):
+        # remove all outputs
         teeplot_save = set()
-    elif teeplot_save is True:
-        if _is_running_on_ci():
-            teeplot_save = {".pdf"}
-        else:
-            teeplot_save = {".pdf", ".png"}
-    else:
-        teeplot_save = {*teeplot_save}
-
-    supported_formats = {".pdf", ".png"}
-    if not teeplot_save <= supported_formats:
-        raise ValueError(
-            f"only {supported_formats} save formats are supported, "
-            f"not {teeplot_save - supported_formats}",
+    elif isinstance(teeplot_save, abc.Iterable):
+        if not {*teeplot_save} <= {*formats}:
+            raise ValueError(
+                f"only {[*formats]} save formats are supported, "
+                f"not {list({*teeplot_save} - {*formats})}",
+            )
+        # remove explicitly disabled outputs
+        teeplot_save = (
+            set(teeplot_save) - set(k for k, v in formats.items() if v is False)
         )
-
-    for format in "pdf", "png":
-        if f"TEEPLOT_{format.upper()}" in os.environ:
-            if strtobool(os.environ[f"TEEPLOT_{format.upper()}"]):
-                teeplot_save.add(f".{format}")
-            else:
-                teeplot_save.discatd(f".{format}")
-        if save.get(f".{format}", None) is not None:
-            if save[f".{format}"]:
-                teeplot_save.add(f".{format}")
-            else:
-                teeplot_save.discard(f".{format}")
+    else:
+        raise TypeError(
+            "teeplot_save kwarg must be None, bool, or iterable, "
+            f"not {type(teeplot_save)} {teeplot_save}",
+        )
 
     # enable TrueType fonts
     # see https://gecco-2021.sigevo.org/Paper-Submission-Instructions
