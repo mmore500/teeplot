@@ -16,7 +16,7 @@ def _is_running_on_ci() -> bool:
     ci_envs = ['CI', 'TRAVIS', 'GITHUB_ACTIONS', 'GITLAB_CI', 'JENKINS_URL']
     return any(env in os.environ for env in ci_envs)
 
-draft_mode: bool = False
+draftmode: bool = False
 
 oncollision: typing.Literal["error", "fix", "ignore", "warn"] = os.environ.get("TEEPLOT_ONCOLLISION", "warn").lower()
 if not oncollision in ("error", "fix", "ignore", "warn"):
@@ -119,8 +119,8 @@ def tee(
         teeplot_save = set(filter(formats.__getitem__, formats))
     elif (
         teeplot_save is False
-        or "TEEPLOT_DRAFT_MODE" in os.environ
-        or draft_mode
+        or strtobool(os.environ.get("TEEPLOT_DRAFTMODE", "F"))
+        or draftmode
     ):
         # remove all outputs
         teeplot_save = set()
