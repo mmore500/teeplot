@@ -13,6 +13,8 @@ def _is_running_on_ci() -> bool:
     ci_envs = ['CI', 'TRAVIS', 'GITHUB_ACTIONS', 'GITLAB_CI', 'JENKINS_URL']
     return any(env in os.environ for env in ci_envs)
 
+draft_mode: bool = False
+
 save = {
     ".pdf": None,
     ".png": None,
@@ -73,7 +75,7 @@ def tee(
       output paths.
     """
     if teeplot_save is None:
-        if "TEEPLOT_DRAFT_MODE" in os.environ:
+        if "TEEPLOT_DRAFT_MODE" in os.environ or draft_mode:
             teeplot_save = set()
         elif _is_running_on_ci():
             teeplot_save = {".pdf"}
