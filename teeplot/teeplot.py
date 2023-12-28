@@ -46,7 +46,7 @@ def tee(
         typing.Literal["error", "fix", "ignore", "warn"]] = None,
     teeplot_outattrs: typing.Dict[str, str] = {},
     teeplot_outdir: str = "teeplots",
-    teeplot_save: typing.Optional[typing.Iterable[str]] = None,
+    teeplot_save: typing.Union[typing.Iterable[str], bool] = True,
     teeplot_subdir: str = '',
     teeplot_transparent: bool = True,
     teeplot_verbose: bool = True,
@@ -72,8 +72,11 @@ def tee(
         Additional attributes to include in the output filename.
     teeplot_outdir : str, default "teeplots"
         Base directory for saving plots.
-    teeplot_save : Iterable[str], optional
-        File formats to save the plots in. Defaults to global settings.
+    teeplot_save : Union[str, Iterable[str], bool], default True
+        File formats to save the plots in.
+
+        If `True`, defaults to global settings. If `False`, suppresses output
+        to all file formats.
     teeplot_subdir : str, default ""
         Subdirectory within `teeplot_outdir` to save plots.
     teeplot_transparent : bool, default True
@@ -124,6 +127,17 @@ def tee(
     ):
         # remove all outputs
         teeplot_save = set()
+    elif isinstance(teeplot_save, str):
+        if not teeplot_save in formats:
+            raise ValueError(
+                f"only {[*formats]} save formats are supported, "
+                f"not {teeplot_save}",
+            )
+        # remove explicitly disabled outputs
+        teeplot_save = {teeplot_save} - set(
+            k for k, v in formats.items() if v is False
+        )
+
     elif isinstance(teeplot_save, abc.Iterable):
         if not {*teeplot_save} <= {*formats}:
             raise ValueError(
