@@ -4,6 +4,7 @@
 `tee` tests for `teeplot` package.
 '''
 
+from matplotlib import pyplot as plt
 import numpy as np
 from keyname import keyname as kn
 import os
@@ -256,4 +257,57 @@ def test_savefalse():
     for ext in '.pdf', '.png':
         assert not os.path.exists(
             os.path.join('teeplots', 'mydirectory', f'savefalse=metadata+viz=lineplot+ext={ext}'),
+        )
+
+
+def test_postprocess_str():
+
+    tp.tee(
+        sns.lineplot,
+        x='timepoint',
+        y='signal',
+        hue='region',
+        style='event',
+        data=sns.load_dataset('fmri'),
+        teeplot_postprocess="teed.set_yscale('log')",
+    )
+
+    for ext in '.pdf', '.png':
+        assert os.path.exists(
+            os.path.join('teeplots', f'hue=region+post=teed-set-yscale-log+style=event+viz=lineplot+x=timepoint+y=signal+ext={ext}'),
+        )
+
+def test_postprocess_hidden():
+
+    tp.tee(
+        sns.lineplot,
+        x='timepoint',
+        y='signal',
+        hue='event',
+        style='region',
+        data=sns.load_dataset('fmri'),
+        teeplot_postprocess="teed.set_yscale('log');",
+    )
+
+    for ext in '.pdf', '.png':
+        assert os.path.exists(
+            os.path.join('teeplots', f'hue=event+style=region+viz=lineplot+x=timepoint+y=signal+ext={ext}'),
+        )
+
+
+def test_postprocess_callable():
+
+    tp.tee(
+        sns.lineplot,
+        x='timepoint',
+        y='signal',
+        hue='region',
+        style='event',
+        data=sns.load_dataset('fmri'),
+        teeplot_postprocess=plt.viridis,
+    )
+
+    for ext in '.pdf', '.png':
+        assert os.path.exists(
+            os.path.join('teeplots', f'hue=region+post=teed-set-yscale-log+style=event+viz=lineplot+x=timepoint+y=signal+ext={ext}'),
         )

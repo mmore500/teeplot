@@ -46,6 +46,7 @@ def tee(
         typing.Literal["error", "fix", "ignore", "warn"]] = None,
     teeplot_outattrs: typing.Dict[str, str] = {},
     teeplot_outdir: str = "teeplots",
+    teeplot_postprocess: typing.Union[str, typing.Callable] = "",
     teeplot_save: typing.Union[typing.Iterable[str], bool] = True,
     teeplot_subdir: str = '',
     teeplot_transparent: bool = True,
@@ -72,6 +73,17 @@ def tee(
         Additional attributes to include in the output filename.
     teeplot_outdir : str, default "teeplots"
         Base directory for saving plots.
+    teeplot_postprocess : Union[str, Callable], default ""
+        Actions to perform on plot result before saving.
+
+        A `str` kwarg will be `exec`'ed, with `plt` and `sns` (if installed)
+        available, as well as the plotter return value as `teed`. If `str` value
+        ends with ';', the postprocess step will not be included in output filename.
+
+        A Callable kwarg will have invocation attempted first with the plotter
+        return value as the `teed` kwarg, second with the plotter return value
+        as  the `ax` kwarg, third with no args, and last with the plotter
+        return value as a positional arg.
     teeplot_save : Union[str, Iterable[str], bool], default True
         File formats to save the plots in.
 
@@ -162,13 +174,41 @@ def tee(
     matplotlib.rcParams['pdf.fonttype'] = 42
     matplotlib.rcParams['ps.fonttype'] = 42
 
-    res = plotter(
-        *args,
-        **{
-            k : v
-            for k, v in kwargs.items()
-        }
-    )
+    teed = plotter(*args, **{k: v for k, v in kwargs.items()})
+
+    if isinstance(teeplot_postprocess, abc.Callable):
+        while "make breakable":
+            try:
+                teeplot_postprocess(teed=teed)  # first attempt
+                break
+            except TypeError:
+                pass
+            try:
+                teeplot_postprocess(ax=teed)  # second attempt
+                break
+            except TypeError:
+                pass
+            try:
+                teeplot_postprocess()  # third attempt
+                break
+            except TypeError:
+                pass
+            try:
+                teeplot_postprocess(teed)  # fourth attempt
+                break
+            except TypeError:
+                pass
+            raise TypeError(  # give up
+                f"teeplot_postprocess={teeplot_postprocess} threw TypeError "
+                "or call signature incompatible with attempted invocations",
+            )
+    elif teeplot_postprocess:
+        try:
+            import seaborn as sns
+            import seaborn
+        except ModuleNotFoundError:
+            pass
+        exec(teeplot_postprocess)
 
     attr_maker = lambda ext: {
         **{
@@ -180,6 +220,13 @@ def tee(
             'viz' : slugify(plotter.__name__),
             'ext' : ext,
         },
+        **(
+            {"post": teeplot_postprocess.__name__}
+            if teeplot_postprocess and isinstance(teeplot_postprocess, abc.Callable)
+            else {"post": slugify(teeplot_postprocess)}
+            if teeplot_postprocess and not teeplot_postprocess.endswith(";")
+            else {}
+        ),
         **teeplot_outattrs,
     }
     out_filenamer = lambda ext: kn.pack({
@@ -235,4 +282,4 @@ def tee(
             dpi=teeplot_dpi,
         )
 
-    return res
+    return teed
