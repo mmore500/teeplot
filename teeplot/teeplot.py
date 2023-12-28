@@ -40,6 +40,12 @@ def tee(
         else:
             teeplot_save = {".pdf", ".png"}
 
+    if "TEEPLOT_PNG" in os.environ:
+        teeplot_save += ".png"
+
+    if "TEEPLOT_PDF" in os.environ:
+        teeplot_save += ".pdf"
+
     # enable TrueType fonts
     # see https://gecco-2021.sigevo.org/Paper-Submission-Instructions
     matplotlib.rcParams['pdf.fonttype'] = 42
