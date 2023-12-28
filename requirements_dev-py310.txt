@@ -17,13 +17,13 @@ bleach==6.0.0
 bump2version==0.5.11
     # via -r requirements_dev.in
 certifi==2022.12.7
-    # via
-    #   matplotlib
-    #   requests
+    # via requests
 charset-normalizer==3.1.0
     # via requests
 click==8.1.3
     # via keyname
+contourpy==1.2.0
+    # via matplotlib
 coverage==4.5.4
     # via -r requirements_dev.in
 cycler==0.11.0
@@ -47,6 +47,8 @@ filelock==3.4.1
     #   virtualenv
 flake8==3.7.8
     # via -r requirements_dev.in
+fonttools==4.47.0
+    # via matplotlib
 idna==3.4
     # via requests
 imagesize==1.4.1
@@ -65,7 +67,7 @@ markupsafe==2.0.1
     # via
     #   -r requirements_dev.in
     #   jinja2
-matplotlib==3.3.2
+matplotlib==3.8.2
     # via
     #   -r requirements_dev.in
     #   seaborn
@@ -76,12 +78,14 @@ more-itertools==9.1.0
 numpy==1.24.2
     # via
     #   -r requirements_dev.in
+    #   contourpy
     #   matplotlib
     #   pandas
     #   scipy
     #   seaborn
 packaging==23.0
     # via
+    #   matplotlib
     #   pytest
     #   sphinx
     #   tox
