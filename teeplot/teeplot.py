@@ -21,6 +21,7 @@ def tee(
     teeplot_save: typing.Optional[typing.Iterable[str]] = None,
     teeplot_subdir: str = '.',
     teeplot_transparent: bool = True,
+    teeplot_verbose: bool = True,
     **kwargs: typing.Any
 ) -> typing.Any:
     """Executes a plotting function and saves the resulting plot to specified
@@ -46,6 +47,8 @@ def tee(
         The subdirectory within `teeplot_outdir` to save plots.
     teeplot_transparent : bool, default True
         Whether to save the plot with a transparent background.
+    teeplot_verbose : bool, default True
+        Should filenames of saved visualizations be printed?
     **kwargs : Any
         Keyword arguments are forwarded to the plotting function.
 
@@ -126,10 +129,12 @@ def tee(
         )
 
         if ext not in teeplot_save:
-            print(f"skipping {out_path}")
+            if teeplot_verbose:
+                print(f"skipping {out_path}")
             continue
 
-        print(out_path)
+        if teeplot_verbose:
+            print(out_path)
         plt.savefig(
             str(out_path),
             bbox_inches='tight',
