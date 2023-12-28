@@ -54,43 +54,53 @@ def tee(
 ) -> typing.Any:
     """Executes a plotting function and saves the resulting plot to specified
     formats using a descriptive filename automatically generated from plotting
-    kwargs.
+    function arguments.
 
     Parameters
     ----------
     plotter : Callable[..., Any]
         The plotting function to execute.
     *args : Any
-        Positional arguments are forwarded to the plotting function.
-    teeplot_outattrs : Dict[str, str], optional
-        Additional key-value information to include in the output filename.
-    teeplot_outdir : str, default "teeplots"
-        The base directory where plots will be saved.
-    teeplot_save : Iterable[str], optional
-        A set of strings indicating which file formats to save the plots.
+        Positional arguments forwarded to the plotting function.
+    teeplot_dpi : int, default 300
+        Resolution for rasterized components of the saved plot in dots per inch.
 
-        Defaults to `.pdf` and `.png` unless running on CI, where it defaults
-        to `.pdf`. Only supported formats are `.pdf` and `.png`.
+        Default is publication-quality 300 dpi.
+    teeplot_oncollision : Literal["error", "fix", "ignore", "warn"], optional
+        Strategy for handling collisions between generated filenames.
+    teeplot_outattrs : Dict[str, str], optional
+        Additional attributes to include in the output filename.
+    teeplot_outdir : str, default "teeplots"
+        Base directory for saving plots.
+    teeplot_save : Iterable[str], optional
+        File formats to save the plots in. Defaults to global settings.
     teeplot_subdir : str, default ""
-        The subdirectory within `teeplot_outdir` to save plots.
+        Subdirectory within `teeplot_outdir` to save plots.
     teeplot_transparent : bool, default True
-        Whether to save the plot with a transparent background.
+        Save the plot with a transparent background.
     teeplot_verbose : bool, default True
-        Should filenames of saved visualizations be printed?
+        Print saved filenames if True.
     **kwargs : Any
-        Keyword arguments are forwarded to the plotting function.
+        Additional keyword arguments forwarded to the plotting function.
 
     Returns
     -------
     Any
         The result from the `plotter` function.
 
+    Raises
+    ------
+    RuntimeError
+        If a file collision occurs and `teeplot_oncollision` is "error".
+    ValueError
+        For invalid format or `teeplot_oncollision` settings.
+
     Notes
     -----
     - The output filename is generated based on the `plotter` function name and
-      the provided attributes.
-    - The function will create directories as needed based on the specified
-      output paths.
+      provided attributes.
+    - Directories are created as needed based on specified output paths.
+    - Enforces TrueType fonts for PDF and PS formats.
     """
     formats = copy.copy(save)
 
