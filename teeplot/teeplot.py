@@ -38,6 +38,15 @@ None defers to teeplot_save kwarg."""
 
 _history = Counter()
 
+
+# enable TrueType fonts
+# see https://gecco-2021.sigevo.org/Paper-Submission-Instructions
+@matplotlib.rc_context(
+    {
+        'pdf.fonttype': 42,
+        'ps.fonttype': 42,
+    },
+)
 def tee(
     plotter: typing.Callable[..., typing.Any],
     *args: typing.Any,
@@ -181,10 +190,8 @@ def tee(
     if teeplot_oncollision is None:
         teeplot_oncollision = oncollision
 
-    # enable TrueType fonts
-    # see https://gecco-2021.sigevo.org/Paper-Submission-Instructions
-    matplotlib.rcParams['pdf.fonttype'] = 42
-    matplotlib.rcParams['ps.fonttype'] = 42
+    # ----- end argument parsing
+    # ----- begin plotting
 
     teed = plotter(*args, **{k: v for k, v in kwargs.items()})
 
