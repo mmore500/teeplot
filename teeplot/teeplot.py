@@ -77,8 +77,14 @@ def tee(
         Base directory for saving plots.
     teeplot_outexcl : Iterable[str], default tuple()
         Attributes to always exclude, if present, from the output filename.
+
+        Under default settings, all kwargs with string values are included in
+        the output filename.
     teeplot_outincl : Iterable[str], default tuple()
         Attributes to always include, if present, in the output filename.
+
+        Under default settings, all kwargs with string values are included in
+        the output filename.
     teeplot_postprocess : Union[str, Callable], default ""
         Actions to perform on plot result before saving.
 
