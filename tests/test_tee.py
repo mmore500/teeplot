@@ -311,3 +311,41 @@ def test_postprocess_callable():
         assert os.path.exists(
             os.path.join('teeplots', f'hue=region+post=teed-set-yscale-log+style=event+viz=lineplot+x=timepoint+y=signal+ext={ext}'),
         )
+
+
+def test_outinclude():
+
+    tp.tee(
+        sns.lineplot,
+        x='timepoint',
+        y='signal',
+        hue='region',
+        style='event',
+        lw=4,
+        data=sns.load_dataset('fmri'),
+        teeplot_outinclude=["lw"],
+    )
+
+    for ext in '.pdf', '.png':
+        assert os.path.exists(
+            os.path.join('teeplots', f'hue=region+lw=4+style=event+viz=lineplot+x=timepoint+y=signal+ext={ext}'),
+        )
+
+
+def test_outexclude():
+
+    tp.tee(
+        sns.lineplot,
+        x='timepoint',
+        y='signal',
+        hue='region',
+        style='event',
+        lw=4,
+        data=sns.load_dataset('fmri'),
+        teeplot_outexclude=["viz"],
+    )
+
+    for ext in '.pdf', '.png':
+        assert os.path.exists(
+            os.path.join('teeplots', f'hue=region+style=event+x=timepoint+y=signal+ext={ext}'),
+        )

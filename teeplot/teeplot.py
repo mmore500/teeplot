@@ -46,6 +46,8 @@ def tee(
         typing.Literal["error", "fix", "ignore", "warn"]] = None,
     teeplot_outattrs: typing.Dict[str, str] = {},
     teeplot_outdir: str = "teeplots",
+    teeplot_outinclude: typing.Iterable[str] = tuple(),
+    teeplot_outexclude: typing.Iterable[str] = tuple(),
     teeplot_postprocess: typing.Union[str, typing.Callable] = "",
     teeplot_save: typing.Union[typing.Iterable[str], bool] = True,
     teeplot_subdir: str = '',
@@ -73,6 +75,10 @@ def tee(
         Additional attributes to include in the output filename.
     teeplot_outdir : str, default "teeplots"
         Base directory for saving plots.
+    teeplot_outexcl : Iterable[str], default tuple()
+        Attributes to always exclude, if present, from the output filename.
+    teeplot_outincl : Iterable[str], default tuple()
+        Attributes to always include, if present, in the output filename.
     teeplot_postprocess : Union[str, Callable], default ""
         Actions to perform on plot result before saving.
 
@@ -215,11 +221,12 @@ def tee(
             pass
         exec(teeplot_postprocess)
 
+    incl = [*teeplot_outinclude]
     attr_maker = lambda ext: {
         **{
-            slugify(k) : slugify(v)
+            slugify(k) : slugify(str(v))
             for k, v in kwargs.items()
-            if isinstance(v, str)
+            if isinstance(v, str) or k in incl
         },
         **{
             'viz' : slugify(plotter.__name__),
@@ -234,10 +241,11 @@ def tee(
         ),
         **teeplot_outattrs,
     }
+    excl = [*teeplot_outexclude]
     out_filenamer = lambda ext: kn.pack({
         k : v
         for k, v in attr_maker(ext).items()
-        if not k.startswith('_')
+        if not k.startswith('_') and not k in excl
     })
 
     out_folder = pathlib.Path(teeplot_outdir, teeplot_subdir)
