@@ -1,5 +1,6 @@
 import os
 import pathlib
+import typing
 
 from keyname import keyname as kn
 import matplotlib
@@ -7,22 +8,57 @@ import matplotlib.pyplot as plt
 from slugify import slugify
 
 
-def _is_running_on_ci():
+def _is_running_on_ci() -> bool:
     ci_envs = ['CI', 'TRAVIS', 'GITHUB_ACTIONS', 'GITLAB_CI', 'JENKINS_URL']
     return any(env in os.environ for env in ci_envs)
 
 
 def tee(
-    plotter,
-    *args,
-    teeplot_outattrs={},
-    teeplot_outdir="teeplots",
-    teeplot_save=None,
-    teeplot_subdir='.',
-    teeplot_transparent=True,
-    **kwargs
-):
+    plotter: typing.Callable[..., typing.Any],
+    *args: typing.Any,
+    teeplot_outattrs: typing.Dict[str, str] = {},
+    teeplot_outdir: str = "teeplots",
+    teeplot_save: typing.Optional[typing.Set[str]] = None,
+    teeplot_subdir: str = '.',
+    teeplot_transparent: bool = True,
+    **kwargs: typing.Any
+) -> typing.Any:
+    """Executes a plotting function and saves the resulting plot to specified
+    formats using a descriptive filename automatically generated from plotting
+    kwargs.
 
+    Parameters
+    ----------
+    plotter : Callable[..., Any]
+        The plotting function to execute.
+    *args : Any
+        Positional arguments are forwarded to the plotting function.
+    teeplot_outattrs : Dict[str, str], optional
+        Additional key-value information to include in the output filename.
+    teeplot_outdir : str, default "teeplots"
+        The base directory where plots will be saved.
+    teeplot_save : Set[str], optional
+        A set of strings indicating which file formats to save the plots.
+
+        Defaults to `.pdf` and `.png` unless running on CI, where it defaults
+        to `.pdf`.
+    teeplot_subdir : str, ./
+        The subdirectory within `teeplot_outdir` to save plots.
+    teeplot_transparent : bool, default True
+        Whether to save the plot with a transparent background.
+    **kwargs : Any
+        Keyword arguments are forwarded to the plotting function.
+
+    Returns
+    -------
+    Any
+        The result from the `plotter` function.
+
+    Notes
+    -----
+    - The output filename is generated based on the `plotter` function name and the provided attributes.
+    - The function will create directories as needed based on the specified output paths.
+    """
     if teeplot_save is None:
         if "TEEPLOT_DRAFT_MODE" in os.environ:
             teeplot_save = {}
