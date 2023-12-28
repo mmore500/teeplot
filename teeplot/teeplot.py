@@ -6,6 +6,7 @@ from keyname import keyname as kn
 import matplotlib
 import matplotlib.pyplot as plt
 from slugify import slugify
+from strtobool import strtobool
 
 
 def _is_running_on_ci() -> bool:
@@ -88,11 +89,12 @@ def tee(
             f"not {teeplot_save - supported_formats}",
         )
 
-    if "TEEPLOT_PNG" in os.environ:
-        teeplot_save.add(".png")
-
-    if "TEEPLOT_PDF" in os.environ:
-        teeplot_save.add(".pdf")
+    for format in "pdf", "png":
+        if f"TEEPLOT_{format.upper()}" in os.environ:
+            if strtobool(os.environ[f"TEEPLOT_{format.upper()}"]):
+                teeplot_save.add(f".{format}")
+            else:
+                teeplot_save.discatd(f".{format}")
 
     # enable TrueType fonts
     # see https://gecco-2021.sigevo.org/Paper-Submission-Instructions

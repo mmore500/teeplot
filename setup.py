@@ -14,6 +14,7 @@ requirements = [
     'keyname>=0.5.2',
     'matplotlib>=3.3.2',
     'python-slugify>=4.0.1',
+    'distutils-strtobool'
 ]
 
 setup_requirements = ['pytest-runner', ]
