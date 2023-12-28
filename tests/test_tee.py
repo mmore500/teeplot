@@ -24,7 +24,7 @@ def test():
         teeplot_outattrs={
           'additional' : 'metadata',
           'for' : 'output-filename',
-          '_one-for' : 'the-meta',
+          '_one-for' : 'exclusion',
         },
     )
 
@@ -32,18 +32,6 @@ def test():
         assert os.path.exists(
             f'teeplots/additional=metadata+for=output-filename+hue=region+style=event+viz=lineplot+x=timepoint+y=signal+ext={ext}',
         )
-        with open(
-            f'teeplots/additional=metadata+for=output-filename+hue=region+style=event+viz=lineplot+x=timepoint+y=signal+ext={ext}.meta',
-            'r',
-        ) as file:
-            assert '_one-for=the-meta' in file.read()
-        # don't assert the exact digest,
-        # because the fmri dataset appears to vary between versions?
-        with open(
-            f'teeplots/additional=metadata+for=output-filename+hue=region+style=event+viz=lineplot+x=timepoint+y=signal+ext={ext}.meta',
-            'r',
-        ) as file:
-            assert '_datadigest=' in file.read()
 
 
 def test_ndarray():
@@ -64,11 +52,6 @@ def test_ndarray():
         assert os.path.exists(
             f'teeplots/viz=lineplot+ext={ext}',
         )
-        with open(
-            f'teeplots/viz=lineplot+ext={ext}.meta',
-            'r',
-        ) as file:
-            assert '_datadigest=011789ddade2f359' in file.read()
 
 def test_datafordigest():
 
@@ -93,11 +76,6 @@ def test_datafordigest():
             f'teeplots/additional=metadata+viz=lineplot+ext={ext}',
         )
 
-        with open(
-            f'teeplots/additional=metadata+viz=lineplot+ext={ext}.meta',
-            'r',
-        ) as file:
-            assert '_datadigest=1053487e16d654f6' in file.read()
 
 def test_outpath():
 
@@ -120,9 +98,6 @@ def test_outpath():
     for ext in '.pdf', '.png':
         assert os.path.exists(
             f'teeplots/mydirectory/additional=metadata+viz=lineplot+ext={ext}',
-        )
-        assert os.path.exists(
-            f'teeplots/mydirectory/additional=metadata+viz=lineplot+ext={ext}.meta',
         )
 
 def test_longname():
