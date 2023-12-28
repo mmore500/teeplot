@@ -25,8 +25,11 @@ if not oncollision in ("error", "fix", "ignore", "warn"):
     )
 
 save = {
+    ".eps": None,
     ".pdf": True,
     ".png": True if not _is_running_on_ci() else None,
+    ".ps": None,
+    ".svg": None,
 }
 """Global format output defaults.
 
@@ -38,6 +41,7 @@ _history = Counter()
 def tee(
     plotter: typing.Callable[..., typing.Any],
     *args: typing.Any,
+    teeplot_dpi: int = 300,
     teeplot_oncollision: typing.Optional[
         typing.Literal["error", "fix", "ignore", "warn"]] = None,
     teeplot_outattrs: typing.Dict[str, str] = {},
@@ -163,7 +167,12 @@ def tee(
     out_folder = pathlib.Path(teeplot_outdir, teeplot_subdir)
     out_folder.mkdir(parents=True, exist_ok=True)
 
-    for ext, dpi in ('.pdf', 'figure'), ('.png', 300):
+    for ext in save:
+
+        if ext not in teeplot_save:
+            if teeplot_verbose > 1:
+                print(f"skipping {out_path}")
+            continue
 
         out_path = pathlib.Path(
             kn.chop(
@@ -193,18 +202,13 @@ def tee(
                 )
         _history[out_path] += 1
 
-        if ext not in teeplot_save:
-            if teeplot_verbose:
-                print(f"skipping {out_path}")
-            continue
-
         if teeplot_verbose:
             print(out_path)
         plt.savefig(
             str(out_path),
             bbox_inches='tight',
             transparent=teeplot_transparent,
-            dpi=dpi,
+            dpi=teeplot_dpi,
         )
 
     return res

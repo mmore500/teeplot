@@ -206,3 +206,54 @@ def test_oncollision_fix():
         assert os.path.exists(
             os.path.join('teeplots', 'mydirectory', f'additional=metadata__+viz=lineplot+#=1+ext={ext}'),
         )
+
+
+@pytest.mark.parametrize("format", [".png", ".pdf", ".ps", ".eps", ".svg"])
+def test_outformat(format):
+
+    # adapted from https://seaborn.pydata.org/generated/seaborn.lineplot.html
+    np.random.seed(1)
+    x, y = np.random.normal(size=(2, 5000)).cumsum(axis=1)
+
+    tp.tee(
+        sns.lineplot,
+        x=x,
+        y=y,
+        sort=False,
+        lw=1,
+        teeplot_outattrs={
+          'outformat' : 'metadata',
+        },
+        teeplot_subdir='mydirectory',
+        teeplot_save={format},
+    )
+
+    for ext in '.pdf', '.png':
+        assert os.path.exists(
+            os.path.join('teeplots', 'mydirectory', f'outformat=metadata+viz=lineplot+ext={ext}'),
+        )
+
+
+def test_savefalse():
+
+    # adapted from https://seaborn.pydata.org/generated/seaborn.lineplot.html
+    np.random.seed(1)
+    x, y = np.random.normal(size=(2, 5000)).cumsum(axis=1)
+
+    tp.tee(
+        sns.lineplot,
+        x=x,
+        y=y,
+        sort=False,
+        lw=1,
+        teeplot_outattrs={
+          'savefalse' : 'metadata',
+        },
+        teeplot_subdir='mydirectory',
+        teeplot_save=False,
+    )
+
+    for ext in '.pdf', '.png':
+        assert not os.path.exists(
+            os.path.join('teeplots', 'mydirectory', f'savefalse=metadata+viz=lineplot+ext={ext}'),
+        )
