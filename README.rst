@@ -336,12 +336,12 @@ This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypack
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
 
-.. |PyPi| image:: https://img.shields.io/pypi/v/outset.svg
-   :target: https://pypi.python.org/pypi/outset
-.. |CI| image:: https://github.com/mmore500/outset/actions/workflows/CI.yml/badge.svg
-   :target: https://github.com/mmore500/outset/actions
-.. |GitHub stars| image:: https://img.shields.io/github/stars/mmore500/outset.svg?style=round-square&logo=github&label=Stars&logoColor=white
-   :target: https://github.com/mmore500/outset
+.. |PyPi| image:: https://img.shields.io/pypi/v/teeplot.svg
+   :target: https://pypi.python.org/pypi/teeplot
+.. |CI| image:: https://github.com/mmore500/teeplot/actions/workflows/CI.yml/badge.svg
+   :target: https://github.com/mmore500/teeplot/actions
+.. |GitHub stars| image:: https://img.shields.io/github/stars/mmore500/teeplot.svg?style=round-square&logo=github&label=Stars&logoColor=white
+   :target: https://github.com/mmore500/teeplot
 .. |docs| image:: https://img.shields.io/badge/docs%20-%20readme%20-%20fedcba?logo=github
    :target: https://github.com/mmore500/teeplot/blob/master/README.rst
 .. |zenodo| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.10440670.svg
