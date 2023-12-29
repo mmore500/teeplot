@@ -39,7 +39,7 @@
 Contents
 --------
 
-- |Usage|_ : `Example 1 <#example-1>`_ | `Example 2 <#example-2>`_ | `Example 3 <#example-3>`_ | `Example 4 <#example-4>`_ | `Example 5 <#example-5>`_ | `Example 6 <#example-6>`_
+- |Usage|_ : `Example 1 <#example-1>`_ | `Example 2 <#example-2>`_ | `Example 3 <#example-3>`_ | `Example 4 <#example-4>`_ | `Example 5 <#example-5>`_
 - |API|_ : `teeplot.tee() <#teeplottee>`_ | `Module-Level Configuration <#module-level-configuration>`_ | `Environment Variables <#environment-variables>`_
 - |Credits|_
 
@@ -177,7 +177,7 @@ Example 4
     .. image:: docs/assets/col=time+hue=sex+post=teed-map-dataframe-sns-scatterplot-x-total-bill-y-tip+viz=facetgrid+ext=_padded.png
 
 
-Example 6
+Example 5
 ^^^^^^^^^
 .. code-block:: python
 
