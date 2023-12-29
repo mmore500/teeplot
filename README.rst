@@ -221,23 +221,39 @@ API
 ``teeplot.tee()``
 ^^^^^^^^^^^^^^^^^
 
-- Executes a plotting function and saves the resulting plot to specified formats using a descriptive filename automatically generated from plotting function arguments.
-- Required parameters:
-   -  ``plotter``: The plotting function to be executed.
-- Optional kwargs:
-   -  ``teeplot_dpi``: Resolution for rasterized components of saved plots, default is publication-quality 300 dpi.
-   -  ``teeplot_oncollision``: Strategy for handling filename collisions: "error", "fix", "ignore", or "warn", default "warn"; inferred from environment if not specified.
-   -  ``teeplot_outattrs``: Dict with additional key-value attributes to include in the output filename.
-   -  ``teeplot_outdir``: Base directory for saving plots, default "teeplots".
-   -  ``teeplot_outinclude``: Attribute keys to always include, if present, in the output filename.
-   -  ``teeplot_outexclude``: Attribute keys to always exclude, if present, from the output filename.
-   -  ``teeplot_postprocess``: Actions to perform after plotting but before saving. Can be a string of code to ``exec`` or a callable function. If a string, it's executed with access to ``plt`` and ``sns`` (if installed), and the plotter return value as ``teed``. If a callable, invocation is attempted with the plotter return value then with no arguments (see docstring for full details).
-   -  ``teeplot_save``: File formats to save the plots in. Defaults to global settings if ``True``, all output suppressed if ``False``. Default global setting is ``{".png", ".pdf"}``. Supported: ".eps", ".png", ".pdf", ".ps", ".svg".
-   -  ``teeplot_subdir``: Optionally, subdirectory within the main output directory for plot organization.
-   -  ``teeplot_transparent``: Option to save the plot with a transparent background, default True.
-   -  ``teeplot_verbose``: Toggles printing of saved filenames, default True.
--  Additional args and kwargs:
-    - forwarded to the plotting function and used to build the output filename.
+Executes a plotting function and saves the resulting plot to specified formats using a descriptive filename automatically generated from plotting function arguments.
+
+
++----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Parameter                  | Description                                                                                                                                                                                                                              |
++============================+==========================================================================================================================================================================================================================================+
+| ``plotter``                | The plotting function to be executed. *Required.*                                                                                                                                                                                        |
++----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Additional args and kwargs | Forwarded to the plotting function and used to build the output filename.                                                                                                                                                                |
++----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``teeplot_dpi``            | Resolution for rasterized components of saved plots, default is publication-quality 300 dpi.                                                                                                                                             |
++----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``teeplot_oncollision``    | Strategy for handling filename collisions: “error”, “fix”, “ignore”, or “warn”, default “warn”; inferred from environment if not specified.                                                                                              |
++----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``teeplot_outattrs``       | Dict with additional key-value attributes to include in the output filename.                                                                                                                                                             |
++----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``teeplot_outdir``         | Base directory for saving plots, default “teeplots”.                                                                                                                                                                                     |
++----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``teeplot_outinclude``     | Attribute keys to always include, if present, in the output filename.                                                                                                                                                                    |
++----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``teeplot_outexclude``     | Attribute keys to always exclude, if present, from the output filename.                                                                                                                                                                  |
++----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``teeplot_postprocess``    | Actions to perform after plotting but before saving. Can be a string of code to ``exec`` or a callable function. If a string, it's executed with access to ``plt`` and ``sns`` (if installed), and the plotter return value as ``teed``. |
++----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``teeplot_save``           | File formats to save the plots in. Defaults to global settings if ``True``, all output suppressed if ``False``. Default global setting is ``{" .png", ".pdf"}``. Supported: “.eps”, “.png”, “.pdf”, “.ps”, “.svg”.                       |
++----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``teeplot_subdir``         | Optionally, subdirectory within the main output directory for plot organization.                                                                                                                                                         |
++----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``teeplot_transparent``    | Option to save the plot with a transparent background, default True.                                                                                                                                                                     |
++----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``teeplot_verbose``        | Toggles printing of saved filenames, default True.                                                                                                                                                                                       |
++----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
 
 Module-Level Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
