@@ -33,7 +33,7 @@ if not oncollision in ("error", "fix", "ignore", "warn"):
 save = {
     ".eps": None,
     ".pdf": True,
-    ".png": True if not _is_running_on_ci() else None,
+    ".png": True,
     ".ps": None,
     ".svg": None,
 }
