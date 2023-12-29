@@ -56,6 +56,7 @@ _history = Counter()
 def tee(
     plotter: typing.Callable[..., typing.Any],
     *args: typing.Any,
+    teeplot_callback: bool = False,
     teeplot_dpi: int = 300,
     teeplot_oncollision: typing.Optional[
         typing.Literal["error", "fix", "ignore", "warn"]] = None,
@@ -81,6 +82,9 @@ def tee(
         The plotting function to execute.
     *args : Any
         Positional arguments forwarded to the plotting function.
+    teeplot_callback : bool, default False
+        If True, return a tuple with callback to dispatch plot save instead of
+        immediately saving plot after running plotter.
     teeplot_dpi : int, default 300
         Resolution for rasterized components of the saved plot in dots per inch.
 
@@ -287,51 +291,57 @@ def tee(
     out_folder = pathlib.Path(teeplot_outdir, teeplot_subdir)
     out_folder.mkdir(parents=True, exist_ok=True)
 
-    for ext in save:
+    def save_callback():
+        for ext in save:
 
-        if ext not in teeplot_save:
-            if teeplot_verbose > 1:
-                print(f"skipping {out_path}")
-            continue
+            if ext not in teeplot_save:
+                if teeplot_verbose > 1:
+                    print(f"skipping {out_path}")
+                continue
 
-        out_path = pathlib.Path(
-            kn.chop(
-                str(out_folder / out_filenamer(ext)),
-                mkdir=True,
-            ),
-        )
+            out_path = pathlib.Path(
+                kn.chop(
+                    str(out_folder / out_filenamer(ext)),
+                    mkdir=True,
+                ),
+            )
 
-        if out_path in _history:
-            if teeplot_oncollision == "error":
-                raise RuntimeError(f"teeplot already created file {out_path}")
-            elif teeplot_oncollision == "fix":
-                count = _history[out_path]
-                suffix = f"ext={ext}"
-                assert str(out_path).endswith(suffix)
-                out_path = str(out_path)[:-len(suffix)] + f"#={count}+" + suffix
-            elif teeplot_oncollision == "ignore":
-                pass
-            elif teeplot_oncollision == "warn":
-                warnings.warn(
-                    f"teeplot already created file {out_path}, overwriting it",
-                )
-            else:
-                raise ValueError(
-                    "teeplot_oncollision must be one of 'error', 'fix', "
-                    f"'ignore', or 'warn', not {teeplot_oncollision}",
-                )
-        _history[out_path] += 1
+            if out_path in _history:
+                if teeplot_oncollision == "error":
+                    raise RuntimeError(f"teeplot already created file {out_path}")
+                elif teeplot_oncollision == "fix":
+                    count = _history[out_path]
+                    suffix = f"ext={ext}"
+                    assert str(out_path).endswith(suffix)
+                    out_path = str(out_path)[:-len(suffix)] + f"#={count}+" + suffix
+                elif teeplot_oncollision == "ignore":
+                    pass
+                elif teeplot_oncollision == "warn":
+                    warnings.warn(
+                        f"teeplot already created file {out_path}, overwriting it",
+                    )
+                else:
+                    raise ValueError(
+                        "teeplot_oncollision must be one of 'error', 'fix', "
+                        f"'ignore', or 'warn', not {teeplot_oncollision}",
+                    )
+            _history[out_path] += 1
 
-        if teeplot_verbose:
-            print(out_path)
-        plt.savefig(
-            str(out_path),
-            bbox_inches='tight',
-            transparent=teeplot_transparent,
-            dpi=teeplot_dpi,
-        )
+            if teeplot_verbose:
+                print(out_path)
+            plt.savefig(
+                str(out_path),
+                bbox_inches='tight',
+                transparent=teeplot_transparent,
+                dpi=teeplot_dpi,
+            )
 
-    if teeplot_show or (teeplot_show is None and hasattr(sys, 'ps1')):
-        plt.show()
+        if teeplot_show or (teeplot_show is None and hasattr(sys, 'ps1')):
+            plt.show()
 
-    return teed
+        return teed
+
+    if teeplot_callback:
+        return save_callback, teed
+    else:
+        return save_callback()

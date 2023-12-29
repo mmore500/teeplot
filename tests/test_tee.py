@@ -349,3 +349,23 @@ def test_outexclude():
         assert os.path.exists(
             os.path.join('teeplots', f'hue=region+style=event+x=timepoint+y=signal+ext={ext}'),
         )
+
+
+def test_callback():
+
+    saveit, ax = tp.tee(
+        sns.lineplot,
+        x='timepoint',
+        y='signal',
+        hue='region',
+        style='event',
+        data=sns.load_dataset('fmri'),
+        teeplot_callback=True,
+    )
+    ax.set_yscale('log')
+    saveit()
+
+    for ext in '.pdf', '.png':
+        assert os.path.exists(
+            os.path.join('teeplots', f'hue=region+style=event+viz=lineplot+x=timepoint+y=signal+ext={ext}'),
+        )
