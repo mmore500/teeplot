@@ -176,8 +176,9 @@ tqdm==4.65.0
     # via twine
 twine==1.14.0
     # via -r requirements_dev.in
-typing-extensions==4.5.0
+typing-extensions==3.10.0.2
     # via
+    #   -r requirements_dev.in
     #   importlib-metadata
     #   kiwisolver
 urllib3==1.26.15

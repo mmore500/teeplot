@@ -7,6 +7,7 @@ import warnings
 import sys
 
 from keyname import keyname as kn
+import typing_extensions as typext
 import matplotlib
 import matplotlib.pyplot as plt
 from slugify import slugify
@@ -19,7 +20,7 @@ def _is_running_on_ci() -> bool:
 
 draftmode: bool = False
 
-oncollision: typing.Literal[
+oncollision: typext.Literal[
     "error", "fix", "ignore", "warn"
 ] = os.environ.get(
     "TEEPLOT_ONCOLLISION",
@@ -59,7 +60,7 @@ def tee(
     teeplot_callback: bool = False,
     teeplot_dpi: int = 300,
     teeplot_oncollision: typing.Optional[
-        typing.Literal["error", "fix", "ignore", "warn"]] = None,
+        typext.Literal["error", "fix", "ignore", "warn"]] = None,
     teeplot_outattrs: typing.Dict[str, str] = {},
     teeplot_outdir: str = "teeplots",
     teeplot_outinclude: typing.Iterable[str] = tuple(),

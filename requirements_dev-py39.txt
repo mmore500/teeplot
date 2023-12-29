@@ -173,6 +173,8 @@ tqdm==4.65.0
     # via twine
 twine==1.14.0
     # via -r requirements_dev.in
+typing-extensions==3.10.0.2
+    # via -r requirements_dev.in
 urllib3==1.26.15
     # via requests
 virtualenv==20.20.0
