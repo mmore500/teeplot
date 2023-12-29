@@ -32,6 +32,8 @@ decorator==5.1.1
     # via retry
 distlib==0.3.6
     # via virtualenv
+distutils-strtobool==0.1.0
+    # via -r requirements_dev.in
 docutils==0.19
     # via
     #   readme-renderer
