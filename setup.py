@@ -7,9 +7,6 @@ from setuptools import setup, find_packages
 with open('README.rst') as readme_file:
     readme = readme_file.read()
 
-with open('HISTORY.rst') as history_file:
-    history = history_file.read()
-
 requirements = [
     'keyname',
     'matplotlib',
@@ -41,7 +38,7 @@ setup(
     description="teeplot automatically saves a copy of rendered Jupyter notebook plots",
     install_requires=requirements,
     license="MIT license",
-    long_description=readme + '\n\n' + history,
+    long_description=readme,
     include_package_data=True,
     keywords='teeplot',
     name='teeplot',
