@@ -19,7 +19,12 @@ def _is_running_on_ci() -> bool:
 
 draftmode: bool = False
 
-oncollision: typing.Literal["error", "fix", "ignore", "warn"] = os.environ.get("TEEPLOT_ONCOLLISION", "warn").lower()
+oncollision: typing.Literal[
+    "error", "fix", "ignore", "warn"
+] = os.environ.get(
+    "TEEPLOT_ONCOLLISION",
+    "warn" if (_is_running_on_ci() or not hasattr(sys, 'ps1')) else "ignore",
+).lower()
 if not oncollision in ("error", "fix", "ignore", "warn"):
     raise RuntimeError(
         f"invalid env var value TEEPLOT_ONCOLLISION={oncollision}",
@@ -82,6 +87,8 @@ def tee(
         Default is publication-quality 300 dpi.
     teeplot_oncollision : Literal["error", "fix", "ignore", "warn"], optional
         Strategy for handling collisions between generated filenames.
+
+        Default "ignore" if executing in interactive mode, else default "warn".
     teeplot_outattrs : Dict[str, str], optional
         Additional attributes to include in the output filename.
     teeplot_outdir : str, default "teeplots"
