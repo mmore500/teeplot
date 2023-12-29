@@ -140,12 +140,14 @@ Example 3
 ^^^^^^^^^
 
 Example with matplotlib, also showing use of ``teeplot_callback`` kwarg .
+We've also used the global configuration option ``save'' to change default output format.
 
 .. code-block:: python
 
     # adapted from https://matplotlib.org/stable/tutorials/pyplot.html
     from matplotlib import pyplot as plt
     import numpy as np; from teeplot import teeplot as tp
+    tp.save = {".eps": True}  # make default output only .eps
 
     data = {'a': np.arange(50), 'c': np.random.randint(0, 50, 50),
             'd': np.random.randn(50)}
@@ -166,8 +168,7 @@ Example with matplotlib, also showing use of ``teeplot_callback`` kwarg .
 
         .. code-block:: python
 
-            teeplots/c=c+s=d+viz=scatter+x=a+y=b+ext=.pdf
-            teeplots/c=c+s=d+viz=scatter+x=a+y=b+ext=.png
+            teeplots/c=c+s=d+viz=scatter+x=a+y=b+ext=.eps
 
     .. image:: docs/assets/c=c+s=d+viz=scatter+x=a+y=b+ext=_padded.png
 
