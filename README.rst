@@ -30,8 +30,8 @@
 
         .. code-block::
 
-            teepots/col=time+hue=sex+post=add_legend+viz=lmplot+x=total-bill+y=tip+ext=.pdf
-            teepots/col=time+hue=sex+post=add_legend+viz=lmplot+x=total-bill+y=tip+ext=.png
+            teeplots/col=time+hue=sex+post=add_legend+viz=lmplot+x=total-bill+y=tip+ext=.pdf
+            teeplots/col=time+hue=sex+post=add_legend+viz=lmplot+x=total-bill+y=tip+ext=.png
 
     .. image:: docs/assets/col=time+hue=sex+post=add_legend+viz=lmplot+x=total-bill+y=tip+ext=_padded.png
 
@@ -92,8 +92,8 @@ Simple example demonstrating use with *pandas* built-in plotting.
 
         .. code-block:: python
 
-            teepots/by=gender+column=age+viz=box+ext=.pdf
-            teepots/by=gender+column=age+viz=box+ext=.png
+            teeplots/by=gender+column=age+viz=box+ext=.pdf
+            teeplots/by=gender+column=age+viz=box+ext=.png
 
     .. image:: docs/assets/by=gender+column=age+viz=box+ext=_padded.png
 
@@ -129,8 +129,8 @@ Example with *seaborn* showing use of ``teeplot_callback`` kwarg to allow for pl
 
         .. code-block::
 
-            teepots/hue=method+palette=vlag+post=teed-set-xscale-log+viz=boxplot+x=distance+y=method+ext=.pdf
-            teepots/hue=method+palette=vlag+post=teed-set-xscale-log+viz=boxplot+x=distance+y=method+ext=.png
+            teeplots/hue=method+palette=vlag+post=teed-set-xscale-log+viz=boxplot+x=distance+y=method+ext=.pdf
+            teeplots/hue=method+palette=vlag+post=teed-set-xscale-log+viz=boxplot+x=distance+y=method+ext=.png
 
     .. image:: docs/assets/hue=method+palette=vlag+post=teed-set-xscale-log+viz=boxplot+x=distance+y=method+ext=_padded.png
 
@@ -166,8 +166,8 @@ Example with matplotlib, also showing use of ``teeplot_callback`` kwarg .
 
         .. code-block:: python
 
-            teepots/c=c+s=d+viz=scatter+x=a+y=b+ext=.pdf
-            teepots/c=c+s=d+viz=scatter+x=a+y=b+ext=.png
+            teeplots/c=c+s=d+viz=scatter+x=a+y=b+ext=.pdf
+            teeplots/c=c+s=d+viz=scatter+x=a+y=b+ext=.png
 
     .. image:: docs/assets/c=c+s=d+viz=scatter+x=a+y=b+ext=_padded.png
 
@@ -196,8 +196,8 @@ Example with *seaborn* ``FacetGrid`` demonstrating use of ``exec``'ed ``teeplot_
 
         .. code-block::
 
-            teepots/col=time+hue=sex+post=teed-map-dataframe-sns-scatterplot-x-total-bill-y-tip+viz=facetgrid+ext=.pdf
-            teepots/col=time+hue=sex+post=teed-map-dataframe-sns-scatterplot-x-total-bill-y-tip+viz=facetgrid+ext=.png
+            teeplots/col=time+hue=sex+post=teed-map-dataframe-sns-scatterplot-x-total-bill-y-tip+viz=facetgrid+ext=.pdf
+            teeplots/col=time+hue=sex+post=teed-map-dataframe-sns-scatterplot-x-total-bill-y-tip+viz=facetgrid+ext=.png
 
     .. image:: docs/assets/col=time+hue=sex+post=teed-map-dataframe-sns-scatterplot-x-total-bill-y-tip+viz=facetgrid+ext=_padded.png
 
