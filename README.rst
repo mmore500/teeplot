@@ -36,6 +36,16 @@
     .. image:: docs/assets/col=time+hue=sex+post=add_legend+viz=lmplot+x=total-bill+y=tip+ext=_padded.png
 
 
+**Here's how it works:** *teeplot*'s ``tee`` function that acts as a wrapper around your plotting calls.
+Give ``tee`` your plotting function (e.g., ``sns.lineplot``) as the first argument and then add the arguments you want to call it with.
+
+*teeplot* automatically captures the function and its arguments, calls the plotter as instructed, and then it handles the matplotlib file output for you.
+It generates descriptive filenames for the saved plots by extracting key information from the plot parameters and arguments.
+This feature allows you to *keep track of your visualizations easily* by making the process of saving and cataloging your plots more *efficient*, *systematic* and *meaningful*, taking the hassle out of manual file management.
+
+*teeplot* contains several advanced features, such as a ``draftmode`` flag, which will disable file output globally, and the ``teeplot_callback`` kwarg, which delays plot output to allow for figure tweaks.
+Read on for details.
+
 Contents
 --------
 
