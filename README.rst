@@ -59,6 +59,9 @@ Usage
 
 Example 1
 ^^^^^^^^^
+
+Simple example demonstrating use with *pandas* built-in plotting.
+
 .. code-block:: python
 
     # adapted from https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.box.html
@@ -85,40 +88,9 @@ Example 1
 
 Example 2
 ^^^^^^^^^
-.. code-block:: python
 
-    # adapted from https://matplotlib.org/stable/tutorials/pyplot.html
-    from matplotlib import pyplot as plt
-    import numpy as np; from teeplot import teeplot as tp
+Example with *seaborn* showing use of ``teeplot_callback`` kwarg to allow for plot tweaks before saving.
 
-    data = {'a': np.arange(50), 'c': np.random.randint(0, 50, 50),
-            'd': np.random.randn(50)}
-    data['b'], data['d'] = data['a'] + 10 * np.random.randn(50), np.abs(data['d']) * 100
-
-    saveit, __ = tp.tee(  # create a callback object to finalize plot
-        plt.scatter,  # plotter...
-        data=data, x='a', y='b', c='c', s='d',  # ...forwarded kwargs
-        teeplot_callback=True)  # teeplot options
-    plt.xlabel('entry a')  # now some tweaks
-    plt.ylabel('entry b')
-    plt.gcf().set_size_inches(5, 3)
-    saveit()  # dispatch output callback
-
-..
-
-    ..
-
-        .. code-block:: python
-
-            teepots/c=c+s=d+viz=scatter+x=a+y=b+ext=.pdf
-            teepots/c=c+s=d+viz=scatter+x=a+y=b+ext=.png
-
-    .. image:: docs/assets/c=c+s=d+viz=scatter+x=a+y=b+ext=_padded.png
-
-----
-
-Example 3
-^^^^^^^^^
 .. code-block:: python
 
     # adapted from https://seaborn.pydata.org/examples/horizontal_boxplot.html
@@ -151,8 +123,48 @@ Example 3
 
 ----
 
+Example 3
+^^^^^^^^^
+
+Example with matplotlib, also showing use of ``teeplot_callback`` kwarg .
+
+.. code-block:: python
+
+    # adapted from https://matplotlib.org/stable/tutorials/pyplot.html
+    from matplotlib import pyplot as plt
+    import numpy as np; from teeplot import teeplot as tp
+
+    data = {'a': np.arange(50), 'c': np.random.randint(0, 50, 50),
+            'd': np.random.randn(50)}
+    data['b'], data['d'] = data['a'] + 10 * np.random.randn(50), np.abs(data['d']) * 100
+
+    saveit, __ = tp.tee(  # create a callback object to finalize plot
+        plt.scatter,  # plotter...
+        data=data, x='a', y='b', c='c', s='d',  # ...forwarded kwargs
+        teeplot_callback=True)  # teeplot options
+    plt.xlabel('entry a')  # now some tweaks
+    plt.ylabel('entry b')
+    plt.gcf().set_size_inches(5, 3)
+    saveit()  # dispatch output callback
+
+..
+
+    ..
+
+        .. code-block:: python
+
+            teepots/c=c+s=d+viz=scatter+x=a+y=b+ext=.pdf
+            teepots/c=c+s=d+viz=scatter+x=a+y=b+ext=.png
+
+    .. image:: docs/assets/c=c+s=d+viz=scatter+x=a+y=b+ext=_padded.png
+
+----
+
 Example 4
 ^^^^^^^^^
+
+Example with *seaborn* ``FacetGrid`` demonstrating use of ``exec``'ed ``teeplot_postprocess`` that adds a ``map_dataframe`` step over the ``teed`` result value and also results in additional semantic information being added to plot filenames (under the "``post=``" key).
+
 .. code-block:: python
 
     # adapted from https://seaborn.pydata.org/generated/seaborn.FacetGrid.html#seaborn.FacetGrid
@@ -180,6 +192,10 @@ Example 4
 
 Example 5
 ^^^^^^^^^
+
+Demonstration of teeplot use with a custom function.
+Note the function name automatically used as "``viz=``" key in output filenames.
+
 .. code-block:: python
 
     # adapted from https://seaborn.pydata.org/examples/pairgrid_dotplot.html
