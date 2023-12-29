@@ -176,6 +176,7 @@ Example 4
 
     .. image:: docs/assets/col=time+hue=sex+post=teed-map-dataframe-sns-scatterplot-x-total-bill-y-tip+viz=facetgrid+ext=_padded.png
 
+----
 
 Example 5
 ^^^^^^^^^
