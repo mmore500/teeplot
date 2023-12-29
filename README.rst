@@ -6,7 +6,7 @@
 *teeplot* wrangles your data visualizations out of notebooks for you
 --------------------------------------------------------------------
 
-|PyPi| |docs| |GitHub stars| |CI|
+|PyPi| |docs| |GitHub stars| |CI| |zenodo|
 
 * Free software: MIT license
 * Installation: ``python3 -m pip install teeplot``
@@ -303,6 +303,27 @@ Environment Variables
 -  ``TEEPLOT_<FORMAT>``: Boolean flags that determine default behavior for each format (e.g., ``EPS``, ``PNG``, ``PDF``, ``PS``, ``SVG``); "defer" defers to call kwargs.
 - ``CI``, etc.: If a continuous integration environment is detected, default ``teeplot_save`` behavior will output only ``.pdf`` files, instead of ``.pdf`` and ``.png`` files. This can be overridden with ``TEEPLOT_<FORMAT>``.
 
+Citation
+--------
+
+If *teeplot* contributes to a scientific publication, please cite it as
+
+    Matthew Andres Moreno. (2023). mmore500/teeplot. Zenodo. https://doi.org/10.5281/zenodo.10440670
+
+.. code:: bibtex
+
+    @software{moreno2023teeplot,
+      author = {Matthew Andres Moreno},
+      title = {mmore500/teeplot},
+      month = dec,
+      year = 2023,
+      publisher = {Zenodo},
+      doi = {10.5281/zenodo.10440670},
+      url = {https://doi.org/10.5281/zenodo.10440670}
+    }
+
+And don't forget to leave a `⭐ on GitHub <https://github.com/mmore500/teeplot/stargazers>`__!
+
 Credits
 -------
 
@@ -321,3 +342,5 @@ This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypack
    :target: https://github.com/mmore500/outset
 .. |docs| image:: https://img.shields.io/badge/docs%20-%20readme%20-%20fedcba?logo=github
    :target: https://github.com/mmore500/teeplot/blob/master/README.rst
+.. |zenodo| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.10440670.svg
+   :target: https://doi.org/10.5281/zenodo.10440670
