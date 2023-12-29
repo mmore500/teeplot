@@ -322,7 +322,7 @@ If *teeplot* contributes to a scientific publication, please cite it as
       url = {https://doi.org/10.5281/zenodo.10440670}
     }
 
-And don't forget to leave a `⭐ on GitHub <https://github.com/mmore500/teeplot/stargazers>`__!
+And don't forget to leave a `star on GitHub <https://github.com/mmore500/teeplot/stargazers>`__!
 
 Credits
 -------
