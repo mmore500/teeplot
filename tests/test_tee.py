@@ -229,10 +229,9 @@ def test_outformat(format):
         teeplot_save={format},
     )
 
-    for ext in '.pdf', '.png':
-        assert os.path.exists(
-            os.path.join('teeplots', 'mydirectory', f'outformat=metadata+viz=lineplot+ext={ext}'),
-        )
+    assert os.path.exists(
+        os.path.join('teeplots', 'mydirectory', f'outformat=metadata+viz=lineplot+ext={format}'),
+    )
 
 
 def test_savefalse():
