@@ -4,6 +4,7 @@ import os
 import pathlib
 import typing
 import warnings
+import sys
 
 from keyname import keyname as kn
 import matplotlib
@@ -59,6 +60,7 @@ def tee(
     teeplot_outexclude: typing.Iterable[str] = tuple(),
     teeplot_postprocess: typing.Union[str, typing.Callable] = "",
     teeplot_save: typing.Union[typing.Iterable[str], bool] = True,
+    teeplot_show: typing.Optional[bool] = None,
     teeplot_subdir: str = '',
     teeplot_transparent: bool = True,
     teeplot_verbose: bool = True,
@@ -110,6 +112,11 @@ def tee(
 
         If `True`, defaults to global settings. If `False`, suppresses output
         to all file formats.
+    teeplot_show : Optional[bool], optional
+        Should `plt.show()` be called?
+
+        If default, call `plt.show()` if interactive environment detected (e.g.,
+        notebook).
     teeplot_subdir : str, default ""
         Subdirectory within `teeplot_outdir` to save plots.
     teeplot_transparent : bool, default True
@@ -311,5 +318,8 @@ def tee(
             transparent=teeplot_transparent,
             dpi=teeplot_dpi,
         )
+
+    if teeplot_show or (teeplot_show is None and hasattr(sys, 'ps1')):
+        plt.show()
 
     return teed
