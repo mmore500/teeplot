@@ -304,7 +304,6 @@ Environment Variables
 -  ``TEEPLOT_ONCOLLISION``: Configures the default collision handling strategy. See ``teeplot_oncollision`` kwarg
 -  ``TEEPLOT_DRAFTMODE``: If set, enables draft mode globally.
 -  ``TEEPLOT_<FORMAT>``: Boolean flags that determine default behavior for each format (e.g., ``EPS``, ``PNG``, ``PDF``, ``PS``, ``SVG``); "defer" defers to call kwargs.
-- ``CI``, etc.: If a continuous integration environment is detected, default ``teeplot_save`` behavior will output only ``.pdf`` files, instead of ``.pdf`` and ``.png`` files. This can be overridden with ``TEEPLOT_<FORMAT>``.
 
 Citation
 --------
