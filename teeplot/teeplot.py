@@ -86,12 +86,12 @@ def tee(
         Additional attributes to include in the output filename.
     teeplot_outdir : str, default "teeplots"
         Base directory for saving plots.
-    teeplot_outexcl : Iterable[str], default tuple()
+    teeplot_outexclude : Iterable[str], default tuple()
         Attributes to always exclude, if present, from the output filename.
 
         Under default settings, all kwargs with string values are included in
         the output filename.
-    teeplot_outincl : Iterable[str], default tuple()
+    teeplot_outinclude : Iterable[str], default tuple()
         Attributes to always include, if present, in the output filename.
 
         Under default settings, all kwargs with string values are included in
@@ -128,7 +128,7 @@ def tee(
 
     Returns
     -------
-    Any
+    Union[Any, Tuple[Callable, Any]]
         The result from the `plotter` function.
 
     Raises
@@ -200,6 +200,11 @@ def tee(
 
     if teeplot_oncollision is None:
         teeplot_oncollision = oncollision
+
+    if isinstance(teeplot_outinclude, str):
+        teeplot_outinclude = [teeplot_outinclude]
+    if isinstance(teeplot_outexclude, str):
+        teeplot_outexclude = [teeplot_outexclude]
 
     # ----- end argument parsing
     # ----- begin plotting
