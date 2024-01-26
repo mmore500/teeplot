@@ -309,7 +309,7 @@ Environment Variables
 Citation
 --------
 
-If *teeplot* contributes to a scientific publication, please cite it as
+If *teeplot* contributes to a scholarly publication, please cite it as
 
     Matthew Andres Moreno. (2023). mmore500/teeplot. Zenodo. https://doi.org/10.5281/zenodo.10440670
 
