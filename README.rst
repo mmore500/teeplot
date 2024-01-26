@@ -296,7 +296,7 @@ Module-Level Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 -  ``teeplot.draftmode``: A boolean indicating whether to suppress output to all file formats.
--  ``teeplot.oncollision``: Default strategy for handling filename collisions, with options like 'error', 'fix', 'ignore', or 'warn'.
+-  ``teeplot.oncollision``: Default strategy for handling filename collisions, options are 'error', 'fix', 'ignore', or 'warn'.
 -  ``teeplot.save``: A dictionary mapping file formats (e.g., ".png") to default save behavior as ``True`` (always output), ``False`` (never output), or ``None`` (defer to call kwargs).
 
 Environment Variables
