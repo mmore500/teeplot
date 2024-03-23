@@ -76,7 +76,7 @@ Simple example demonstrating use with *pandas* built-in plotting.
 
     ..
 
-        .. code-block:: python
+        .. code-block::
 
             teeplots/by=gender+column=age+viz=box+ext=.pdf
             teeplots/by=gender+column=age+viz=box+ext=.png
@@ -152,7 +152,7 @@ We've also used the global configuration option ``save`` to change default outpu
 
     ..
 
-        .. code-block:: python
+        .. code-block::
 
             teeplots/c=c+s=d+viz=scatter+x=a+y=b+ext=.eps
 
