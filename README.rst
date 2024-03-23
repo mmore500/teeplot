@@ -51,7 +51,7 @@ Contents
 
 - **Usage** : `Example 1 <#example-1>`_ | `Example 2 <#example-2>`_ | `Example 3 <#example-3>`_ | `Example 4 <#example-4>`_ | `Example 5 <#example-5>`_
 - **API** : `teeplot.tee() <#teeplottee>`_ | `Module-Level Configuration <#module-level-configuration>`_ | `Environment Variables <#environment-variables>`_
-- **Citation** | |Credits|_
+- **Citation** `here <#citation>` | **Credits** `here <#credits>`
 
 Usage
 -----
