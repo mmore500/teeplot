@@ -140,7 +140,7 @@ Example 3
 ^^^^^^^^^
 
 Example with matplotlib, also showing use of ``teeplot_callback`` kwarg .
-We've also used the global configuration option ``save'' to change default output format.
+We've also used the global configuration option ``save`` to change default output format.
 
 .. code-block:: python
 
