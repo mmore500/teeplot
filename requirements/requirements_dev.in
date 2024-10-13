@@ -1,12 +1,12 @@
 bump2version==0.5.11
-wheel==0.33.6
+wheel>=0.33.6
 watchdog>=0.9.0
-flake8==3.7.8
-tox==3.26.0
+flake8>=3.7.8
+tox>=3.26.0
 coverage>=4.5.4
 Sphinx==1.8.5
-twine==1.14.0
-seaborn==0.11.2
+twine>=1.14.0
+seaborn>=0.11.2
 keyname==0.6.0
 matplotlib>=3.5.3
 python-slugify>=4.0.1
@@ -14,8 +14,8 @@ pytest==7.2.2
 typing-extensions==3.10.0.2
 distutils-strtobool==0.1.0
 
-filelock==3.4.1
-importlib-metadata==4.8.3
-markupsafe==2.0.1
-platformdirs==2.4.0
-zipp==3.6.0
+filelock>=3.4.1
+importlib-metadata=>4.8.3
+markupsafe>=2.0.1
+platformdirs>=2.4.0
+zipp>=3.6.0
