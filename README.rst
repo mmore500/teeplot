@@ -230,6 +230,7 @@ Note the function name automatically used as "``viz=``" key in output filenames.
 
     .. image:: docs/assets/viz=dot-plot+x-vars=index-total-speeding-alcohol-not-distracted-no-previous-dtype-object+y-vars=abbrev+ext=_padded.png
 
+----
 
 Further Examples
 ^^^^^^^^^^^^^^^^
