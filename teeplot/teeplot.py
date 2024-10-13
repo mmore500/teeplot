@@ -336,7 +336,14 @@ def tee(
                 transparent=teeplot_transparent,
                 dpi=teeplot_dpi,
                 # see https://matplotlib.org/2.1.1/users/whats_new.html#reproducible-ps-pdf-and-svg-output
-                metadata=None,
+                metadata={
+                    key: None
+                    for key in {
+                        ".png": [],
+                        ".pdf": ["CreationDate"],
+                        ".svg": ["Date"],
+                    }.get(ext, [])
+                },
             )
 
         if teeplot_show or (teeplot_show is None and hasattr(sys, 'ps1')):
