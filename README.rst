@@ -234,7 +234,7 @@ Note the function name automatically used as "``viz=``" key in output filenames.
 Further Examples
 ^^^^^^^^^^^^^^^^
 
-Check out the medium article on teeplot for more examples and use cases, `here <https://medium.com/towards-data-science/an-easier-way-to-wrangle-jupyter-notebook-visualizations-620a86cd9279>`__.
+Find more examples and use cases in `this medium article <https://medium.com/towards-data-science/an-easier-way-to-wrangle-jupyter-notebook-visualizations-620a86cd9279>`__.
 
 
 API
