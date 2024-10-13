@@ -231,6 +231,11 @@ Note the function name automatically used as "``viz=``" key in output filenames.
     .. image:: docs/assets/viz=dot-plot+x-vars=index-total-speeding-alcohol-not-distracted-no-previous-dtype-object+y-vars=abbrev+ext=_padded.png
 
 
+Further Examples
+^^^^^^^^^^^^^^^^
+
+Check out the medium article on teeplot for more examples and use cases, `here <https://medium.com/towards-data-science/an-easier-way-to-wrangle-jupyter-notebook-visualizations-620a86cd9279>`__.
+
 
 API
 ---
