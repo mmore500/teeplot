@@ -88,7 +88,7 @@ Simple example demonstrating use with *pandas* built-in plotting.
 Example 2
 ^^^^^^^^^
 
-Example with *seaborn* showing use of ``teeplot_callback`` kwarg to allow for plot tweaks before saving.
+Example with *seaborn* showing use of ``teed`` context manager interface to allow for plot tweaks before saving.
 
 .. code-block:: python
 
@@ -97,17 +97,17 @@ Example with *seaborn* showing use of ``teeplot_callback`` kwarg to allow for pl
     import seaborn as sns
     from teeplot import teeplot as tp
 
-    saveit, ax = tp.tee(  # create a callback object to finalize plot
+    with tp.teed(  # plot is finalized upon leaving context
         sns.boxplot,  # plotter...
         sns.load_dataset("planets"),  # ...forwarded arg & kwargs
         x="distance", y="method", hue="method", palette="vlag",
         whis=[0, 100], width=.6,  # ... and then teeplot options
-        teeplot_callback=True, teeplot_postprocess="teed.set_xscale('log')")
-    ax.xaxis.grid(True)  # now some tweaks
-    ax.set(ylabel="")
-    sns.despine()
-    plt.gcf().set_size_inches(10, 4)
-    saveit()  # dispatch output callback
+        teeplot_callback=True, teeplot_postprocess="teed.set_xscale('log')"
+    ) as ax:
+        ax.xaxis.grid(True)  # now some tweaks
+        ax.set(ylabel="")
+        sns.despine()
+        plt.gcf().set_size_inches(10, 4)
 
 ..
 
@@ -125,7 +125,7 @@ Example with *seaborn* showing use of ``teeplot_callback`` kwarg to allow for pl
 Example 3
 ^^^^^^^^^
 
-Example with matplotlib, also showing use of ``teeplot_callback`` kwarg .
+Example with matplotlib, showing alternate ``teeplot_callback`` kwarg interface.
 We've also used the global configuration option ``save`` to change default output format.
 
 .. code-block:: python
