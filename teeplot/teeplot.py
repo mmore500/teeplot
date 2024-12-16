@@ -1,4 +1,5 @@
 from collections import abc, Counter
+from contextlib import contextmanager
 import copy
 import os
 import pathlib
@@ -355,3 +356,24 @@ def tee(
         return save_callback, teed
     else:
         return save_callback()
+
+
+@contextmanager
+def teed(*args: list, **kwargs: dict):
+    """Context manager interface to `teeplot.tee`.
+
+    Plot save is dispatched upon exiting the context. Return value is the
+    plotter return value. See `teeplot.tee` for kwarg options.
+    """
+    if "teeplot_callback" in kwargs:
+        raise ValueError(
+            "teeplot_callback kwarg is not allowed in teed context manager",
+        )
+    kwargs["teeplot_callback"] = True
+
+    saveit = lambda *_args, **_kwargs: None
+    try:
+        saveit, handle = tee(*args, **kwargs)
+        yield handle
+    finally:
+        saveit()
