@@ -397,8 +397,6 @@ def validate_teewrap_kwargs(teeplot_kwargs):
 
 
 def teewrap(
-    *,
-    teeplot_outattr_names: typing.Optional[typing.Iterable[str]] = None,
     **teeplot_kwargs: object,
 ):
     """Decorator interface to `teeplot.tee`
@@ -406,9 +404,8 @@ def teewrap(
     Works by returning a decorator that wraps `f` by calling `teeplot.tee` using
     `f` and any passed in arguments and keyword arguments. However `teeplot_outattrs`
     is not allowed with this function, as it would not make sense to have hardcoded
-    attributes as a decorator. Instead, we use `teeplot_outattr_names` to give names
-    of the parameters of `f` (except any variadic arguments, as they are all unnamed)
-    to use as `teeplot_outattrs` internally.
+    attributes as a decorator. Instead, see `teeplot_outinclude` in `teeplot.tee`.
+    `teeplot.teewrap` defaults to including all keyword arguments.
     """
     validate_teewrap_kwargs(teeplot_kwargs)
 
@@ -416,6 +413,7 @@ def teewrap(
         @functools.wraps(f)
         def inner(*args, **kwargs):
 
+            teeplot_outattr_names = teeplot_kwargs.get("teeplot_outinclude")
             if teeplot_outattr_names is None:
                 return tee(
                     f,
@@ -425,31 +423,10 @@ def teewrap(
                     **kwargs,
                 )
 
-            # build a list of arguments up until anything variadic
-            arg_dict = {}
-            try:
-                for i, (pname, pval) in enumerate(
-                    inspect.signature(f).parameters.items()
-                ):
-                    if pval.kind == inspect.Parameter.VAR_POSITIONAL:
-                        break
-                    arg_dict[pname] = args[i]
-            # something must have gone wrong with getting the signature
-            except ValueError as e:
-                warnings.warn(
-                    f"teeplot: Something went wrong with parsing parameter names:\n\033[33m{e}\033[0m"
-                )
-                arg_dict = {}  # reset dict to avoid weird behavior
-
             return tee(
                 f,
                 *args,
                 **teeplot_kwargs,
-                teeplot_outattrs={
-                    k: v
-                    for k, v in (arg_dict | kwargs).items()
-                    if k in teeplot_outattr_names
-                },
                 **kwargs,
             )
 
