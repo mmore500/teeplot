@@ -416,6 +416,15 @@ def teewrap(
         @functools.wraps(f)
         def inner(*args, **kwargs):
 
+            if teeplot_outattr_names is None:
+                return tee(
+                    f,
+                    *args,
+                    **teeplot_kwargs,
+                    teeplot_outattrs=kwargs,
+                    **kwargs,
+                )
+
             # build a list of arguments up until anything variadic
             arg_dict = {}
             try:
@@ -432,14 +441,6 @@ def teewrap(
                 )
                 arg_dict = {}  # reset dict to avoid weird behavior
 
-            if teeplot_outattr_names is None:
-                return tee(
-                    f,
-                    *args,
-                    **teeplot_kwargs,
-                    teeplot_outattrs=arg_dict | kwargs,
-                    **kwargs,
-                )
             return tee(
                 f,
                 *args,
