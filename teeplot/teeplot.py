@@ -269,7 +269,7 @@ def tee(
         **{
             slugify(k): slugify(str(v))
             for k, v in kwargs.items()
-            if isinstance(v, str) or k in incl
+            if isinstance(v, (str, int, float)) or k in incl
         },
         **{
             "viz": slugify(plotter.__name__),
