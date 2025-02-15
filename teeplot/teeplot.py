@@ -2,7 +2,6 @@ from collections import abc, Counter
 from contextlib import contextmanager
 import copy
 import functools
-import inspect
 import os
 import pathlib
 import typing
@@ -18,15 +17,16 @@ from strtobool import strtobool
 
 
 def _is_running_on_ci() -> bool:
-    ci_envs = ["CI", "TRAVIS", "GITHUB_ACTIONS", "GITLAB_CI", "JENKINS_URL"]
+    ci_envs = ['CI', 'TRAVIS', 'GITHUB_ACTIONS', 'GITLAB_CI', 'JENKINS_URL']
     return any(env in os.environ for env in ci_envs)
-
 
 draftmode: bool = False
 
-oncollision: typext.Literal["error", "fix", "ignore", "warn"] = os.environ.get(
+oncollision: typext.Literal[
+    "error", "fix", "ignore", "warn"
+] = os.environ.get(
     "TEEPLOT_ONCOLLISION",
-    "warn" if (_is_running_on_ci() or not hasattr(sys, "ps1")) else "ignore",
+    "warn" if (_is_running_on_ci() or not hasattr(sys, 'ps1')) else "ignore",
 ).lower()
 if not oncollision in ("error", "fix", "ignore", "warn"):
     raise RuntimeError(
@@ -52,8 +52,8 @@ _history = Counter()
 # see https://gecco-2021.sigevo.org/Paper-Submission-Instructions
 @matplotlib.rc_context(
     {
-        "pdf.fonttype": 42,
-        "ps.fonttype": 42,
+        'pdf.fonttype': 42,
+        'ps.fonttype': 42,
     },
 )
 def tee(
@@ -62,8 +62,7 @@ def tee(
     teeplot_callback: bool = False,
     teeplot_dpi: int = 300,
     teeplot_oncollision: typing.Optional[
-        typext.Literal["error", "fix", "ignore", "warn"]
-    ] = None,
+        typext.Literal["error", "fix", "ignore", "warn"]] = None,
     teeplot_outattrs: typing.Dict[str, str] = {},
     teeplot_outdir: str = "teeplots",
     teeplot_outinclude: typing.Iterable[str] = tuple(),
@@ -71,10 +70,10 @@ def tee(
     teeplot_postprocess: typing.Union[str, typing.Callable] = "",
     teeplot_save: typing.Union[typing.Iterable[str], bool] = True,
     teeplot_show: typing.Optional[bool] = None,
-    teeplot_subdir: str = "",
+    teeplot_subdir: str = '',
     teeplot_transparent: bool = True,
     teeplot_verbose: bool = True,
-    **kwargs: typing.Any,
+    **kwargs: typing.Any
 ) -> typing.Any:
     """Executes a plotting function and saves the resulting plot to specified
     formats using a descriptive filename automatically generated from plotting
@@ -185,11 +184,12 @@ def tee(
     elif isinstance(teeplot_save, str):
         if not teeplot_save in formats:
             raise ValueError(
-                f"only {[*formats]} save formats are supported, " f"not {teeplot_save}",
+                f"only {[*formats]} save formats are supported, "
+                f"not {teeplot_save}",
             )
         # remove explicitly disabled outputs
         blacklist = set(k for k, v in formats.items() if v is False)
-        exclusions = {teeplot_save} & blacklist
+        exclusions =  {teeplot_save} & blacklist
         if teeplot_verbose and exclusions:
             print(f"skipping {exclusions}")
         teeplot_save = {teeplot_save} - exclusions
@@ -202,7 +202,7 @@ def tee(
             )
         # remove explicitly disabled outputs
         blacklist = set(k for k, v in formats.items() if v is False)
-        exclusions = set(teeplot_save) & blacklist
+        exclusions =  set(teeplot_save) & blacklist
         if teeplot_verbose and exclusions:
             print(f"skipping {exclusions}")
         teeplot_save = set(teeplot_save) - exclusions
@@ -267,33 +267,29 @@ def tee(
     incl = [*teeplot_outinclude]
     attr_maker = lambda ext: {
         **{
-            slugify(k): slugify(str(v))
+            slugify(k) : slugify(str(v))
             for k, v in kwargs.items()
-            if isinstance(v, (str, bool)) or k in incl
+            if isinstance(v, str) or k in incl
         },
         **{
-            "viz": slugify(plotter.__name__),
-            "ext": ext,
+            'viz' : slugify(plotter.__name__),
+            'ext' : ext,
         },
         **(
             {"post": teeplot_postprocess.__name__}
             if teeplot_postprocess and isinstance(teeplot_postprocess, abc.Callable)
-            else (
-                {"post": slugify(teeplot_postprocess)}
-                if teeplot_postprocess and not teeplot_postprocess.endswith(";")
-                else {}
-            )
+            else {"post": slugify(teeplot_postprocess)}
+            if teeplot_postprocess and not teeplot_postprocess.endswith(";")
+            else {}
         ),
         **teeplot_outattrs,
     }
     excl = [*teeplot_outexclude]
-    out_filenamer = lambda ext: kn.pack(
-        {
-            k: v
-            for k, v in attr_maker(ext).items()
-            if not k.startswith("_") and not k in excl
-        }
-    )
+    out_filenamer = lambda ext: kn.pack({
+        k : v
+        for k, v in attr_maker(ext).items()
+        if not k.startswith('_') and not k in excl
+    })
 
     out_folder = pathlib.Path(teeplot_outdir, teeplot_subdir)
     out_folder.mkdir(parents=True, exist_ok=True)
@@ -320,7 +316,7 @@ def tee(
                     count = _history[out_path]
                     suffix = f"ext={ext}"
                     assert str(out_path).endswith(suffix)
-                    out_path = str(out_path)[: -len(suffix)] + f"#={count}+" + suffix
+                    out_path = str(out_path)[:-len(suffix)] + f"#={count}+" + suffix
                 elif teeplot_oncollision == "ignore":
                     pass
                 elif teeplot_oncollision == "warn":
@@ -338,7 +334,7 @@ def tee(
                 print(out_path)
             plt.savefig(
                 str(out_path),
-                bbox_inches="tight",
+                bbox_inches='tight',
                 transparent=teeplot_transparent,
                 dpi=teeplot_dpi,
                 # see https://matplotlib.org/2.1.1/users/whats_new.html#reproducible-ps-pdf-and-svg-output
@@ -352,7 +348,7 @@ def tee(
                 },
             )
 
-        if teeplot_show or (teeplot_show is None and hasattr(sys, "ps1")):
+        if teeplot_show or (teeplot_show is None and hasattr(sys, 'ps1')):
             plt.show()
 
         return teed
@@ -364,7 +360,7 @@ def tee(
 
 
 @contextmanager
-def teed(*args, **kwargs):
+def teed(*args: list, **kwargs: dict):
     """Context manager interface to `teeplot.tee`.
 
     Plot save is dispatched upon exiting the context. Return value is the
@@ -383,14 +379,12 @@ def teed(*args, **kwargs):
     finally:
         saveit()
 
-
 def validate_teewrap_kwargs(teeplot_kwargs):
-    params = {k for k in inspect.signature(tee).parameters if k.startswith("teeplot")}
-    if not all(k in params for k in teeplot_kwargs):
+    if not all(k.startwith("teeplot") for k in teeplot_kwargs):
         raise ValueError(
             "The only keyword arguments passed into the `teewrap` decorator can be teeplot arguments"
         )
-    if "teeplot_outattrs" in params:
+    if "teeplot_outattrs" in teeplot_kwargs:
         raise ValueError(
             "`teeplot_outattrs` cannot be used with `teewrap`. Use `teeplot_outattr_names` instead."
         )
@@ -412,17 +406,6 @@ def teewrap(
     def decorator(f: typing.Callable):
         @functools.wraps(f)
         def inner(*args, **kwargs):
-
-            teeplot_outattr_names = teeplot_kwargs.get("teeplot_outinclude")
-            if teeplot_outattr_names is None:
-                return tee(
-                    f,
-                    *args,
-                    **teeplot_kwargs,
-                    teeplot_outattrs=kwargs,
-                    **kwargs,
-                )
-
             return tee(
                 f,
                 *args,
