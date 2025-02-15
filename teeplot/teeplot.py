@@ -385,10 +385,6 @@ def validate_teewrap_kwargs(teeplot_kwargs: dict[str, object]):
         raise ValueError(
             "The only keyword arguments passed into the `teewrap` decorator can be teeplot arguments"
         )
-    if "teeplot_outattrs" in teeplot_kwargs:
-        raise ValueError(
-            "`teeplot_outattrs` cannot be used with `teewrap`. Use `teeplot_outattr_names` instead."
-        )
 
 
 def teewrap(
