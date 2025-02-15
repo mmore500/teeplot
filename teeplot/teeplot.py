@@ -379,6 +379,7 @@ def teed(*args: list, **kwargs: dict):
     finally:
         saveit()
 
+
 def validate_teewrap_kwargs(teeplot_kwargs):
     if not all(k.startwith("teeplot") for k in teeplot_kwargs):
         raise ValueError(
