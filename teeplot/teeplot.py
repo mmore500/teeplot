@@ -383,7 +383,7 @@ def teed(*args, **kwargs):
 def validate_teewrap_kwargs(teeplot_kwargs: dict[str, object]):
     if not all(k.startswith("teeplot_") for k in teeplot_kwargs):
         raise ValueError(
-            "The only keyword arguments passed into the `teewrap` decorator can be teeplot arguments"
+            "The `teewrap` decorator only accepts teeplot_* keyword arguments"
         )
 
 
