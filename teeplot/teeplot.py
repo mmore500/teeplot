@@ -360,7 +360,7 @@ def tee(
 
 
 @contextmanager
-def teed(*args: list, **kwargs: dict):
+def teed(*args, **kwargs):
     """Context manager interface to `teeplot.tee`.
 
     Plot save is dispatched upon exiting the context. Return value is the
@@ -380,8 +380,8 @@ def teed(*args: list, **kwargs: dict):
         saveit()
 
 
-def validate_teewrap_kwargs(teeplot_kwargs):
-    if not all(k.startwith("teeplot") for k in teeplot_kwargs):
+def validate_teewrap_kwargs(teeplot_kwargs: dict[str, object]):
+    if not all(k.startswith("teeplot") for k in teeplot_kwargs):
         raise ValueError(
             "The only keyword arguments passed into the `teewrap` decorator can be teeplot arguments"
         )
