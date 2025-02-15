@@ -92,5 +92,5 @@ def test_included_outattrs(a, b):
 
     for ext in '.pdf', '.png':
         assert os.path.exists(
-            os.path.join('teeplots', f'a={a}+b={b}+hue=region+viz=lineplot+x=timepoint+y=signal+ext={ext}'),
+            os.path.join('teeplots', f'a={a}+b={b}+hue=region+viz=lineplot+x=timepoint+y=signal+ext={ext}'.lower()),
         )
