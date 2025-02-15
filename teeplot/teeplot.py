@@ -380,13 +380,6 @@ def teed(*args, **kwargs):
         saveit()
 
 
-def validate_teewrap_kwargs(teeplot_kwargs: dict[str, object]):
-    if not all(k.startswith("teeplot_") for k in teeplot_kwargs):
-        raise ValueError(
-            "The `teewrap` decorator only accepts teeplot_* keyword arguments"
-        )
-
-
 def teewrap(
     **teeplot_kwargs: object,
 ):
@@ -398,7 +391,10 @@ def teewrap(
     the same across function calls. For printing attributes on a per-call basis, 
     see `teeplot_outinclude` in `teeplot.tee`.
     """
-    validate_teewrap_kwargs(teeplot_kwargs)
+    if not all(k.startswith("teeplot_") for k in teeplot_kwargs):
+        raise ValueError(
+            "The `teewrap` decorator only accepts teeplot_* keyword arguments"
+        )
 
     def decorator(f: typing.Callable):
         @functools.wraps(f)
