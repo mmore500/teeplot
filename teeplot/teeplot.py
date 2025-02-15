@@ -393,9 +393,10 @@ def teewrap(
     """Decorator interface to `teeplot.tee`
 
     Works by returning a decorator that wraps `f` by calling `teeplot.tee` using
-    `f` and any passed in arguments and keyword arguments. However `teeplot_outattrs`
-    is not allowed with this function, as it would not make sense to have hardcoded
-    attributes as a decorator. Instead, see `teeplot_outinclude` in `teeplot.tee`.
+    `f` and any passed in arguments and keyword arguments. However, using 
+    `teeplot_outattrs` like in `teeplot.tee` will cause printed attributes to be  
+    the same across function calls. For printing attributes on a per-call basis, 
+    see `teeplot_outinclude` in `teeplot.tee`.
     """
     validate_teewrap_kwargs(teeplot_kwargs)
 
