@@ -400,7 +400,6 @@ def teewrap(
     `f` and any passed in arguments and keyword arguments. However `teeplot_outattrs`
     is not allowed with this function, as it would not make sense to have hardcoded
     attributes as a decorator. Instead, see `teeplot_outinclude` in `teeplot.tee`.
-    `teeplot.teewrap` defaults to including all keyword arguments.
     """
     validate_teewrap_kwargs(teeplot_kwargs)
 
