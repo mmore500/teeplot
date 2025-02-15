@@ -1,6 +1,7 @@
 from collections import abc, Counter
 from contextlib import contextmanager
 import copy
+import functools
 import os
 import pathlib
 import typing
@@ -359,7 +360,7 @@ def tee(
 
 
 @contextmanager
-def teed(*args: list, **kwargs: dict):
+def teed(*args, **kwargs):
     """Context manager interface to `teeplot.tee`.
 
     Plot save is dispatched upon exiting the context. Return value is the
@@ -377,3 +378,34 @@ def teed(*args: list, **kwargs: dict):
         yield handle
     finally:
         saveit()
+
+
+def teewrap(
+    **teeplot_kwargs: object,
+):
+    """Decorator interface to `teeplot.tee`
+
+    Works by returning a decorator that wraps `f` by calling `teeplot.tee` using
+    `f` and any passed in arguments and keyword arguments. However, using 
+    `teeplot_outattrs` like in `teeplot.tee` will cause printed attributes to be  
+    the same across function calls. For printing attributes on a per-call basis, 
+    see `teeplot_outinclude` in `teeplot.tee`.
+    """
+    if not all(k.startswith("teeplot_") for k in teeplot_kwargs):
+        raise ValueError(
+            "The `teewrap` decorator only accepts teeplot_* keyword arguments"
+        )
+
+    def decorator(f: typing.Callable):
+        @functools.wraps(f)
+        def inner(*args, **kwargs):
+            return tee(
+                f,
+                *args,
+                **teeplot_kwargs,
+                **kwargs,
+            )
+
+        return inner
+
+    return decorator
