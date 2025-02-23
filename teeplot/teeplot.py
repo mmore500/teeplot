@@ -36,6 +36,7 @@ if not oncollision in ("error", "fix", "ignore", "warn"):
 save = {
     ".eps": None,
     ".pdf": True,
+    ".pgf": None,
     ".png": True,
     ".ps": None,
     ".svg": None,
@@ -338,14 +339,16 @@ def tee(
                 transparent=teeplot_transparent,
                 dpi=teeplot_dpi,
                 # see https://matplotlib.org/2.1.1/users/whats_new.html#reproducible-ps-pdf-and-svg-output
-                metadata={
-                    key: None
-                    for key in {
-                        ".png": [],
-                        ".pdf": ["CreationDate"],
-                        ".svg": ["Date"],
-                    }.get(ext, [])
-                },
+                **dict(
+                    metadata={
+                        key: None
+                        for key in {
+                            ".png": [],
+                            ".pdf": ["CreationDate"],
+                            ".svg": ["Date"],
+                        }.get(ext, [])
+                    },
+                ) if ext != ".pgf" else {},
             )
 
         if teeplot_show or (teeplot_show is None and hasattr(sys, 'ps1')):

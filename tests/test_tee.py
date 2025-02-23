@@ -209,7 +209,7 @@ def test_oncollision_fix():
         )
 
 
-@pytest.mark.parametrize("format", [".png", ".pdf", ".ps", ".eps", ".svg"])
+@pytest.mark.parametrize("format", [".png", ".pdf", ".pgf", ".ps", ".eps", ".svg"])
 def test_outformat(format):
 
     # adapted from https://seaborn.pydata.org/generated/seaborn.lineplot.html
