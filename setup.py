@@ -3,10 +3,13 @@
 """The setup script."""
 
 from setuptools import setup, find_packages
-import pypandoc
 
-with open('README.rst') as readme_file:
-    readme = pypandoc.convert_text(readme_file.read(), to='md', format='rst')
+try:
+    import pypandoc
+    with open('README.rst') as readme_file:
+        readme = pypandoc.convert_text(readme_file.read(), to='md', format='rst')
+except ImportError:
+    readme = 0
 
 requirements = [
     'keyname',
