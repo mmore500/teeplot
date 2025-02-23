@@ -270,7 +270,7 @@ Executes a plotting function and saves the resulting plot to specified formats u
 +----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | ``teeplot_postprocess``    | Actions to perform after plotting but before saving. Can be a string of code to ``exec`` or a callable function. If a string, it's executed with access to ``plt`` and ``sns`` (if installed), and the plotter return value as ``teed``. |
 +----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``teeplot_save``           | File formats to save the plots in. Defaults to global settings if ``True``, all output suppressed if ``False``. Default global setting is ``{" .png", ".pdf"}``. Supported: ".eps", ".png", ".pdf", ".ps", ".svg".                       |
+| ``teeplot_save``           | File formats to save the plots in. Defaults to global settings if ``True``, all output suppressed if ``False``. Default global setting is ``{" .png", ".pdf"}``. Supported: ".eps", ".png", ".pdf", ".pgf", ".ps", ".svg".                       |
 +----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | ``teeplot_show``           | Dictates whether ``plt.show()`` should be called after plot is saved. If True, the plot is displayed using ``plt.show()``. Default behavior is to display if an interactive environment is detected (e.g., a notebook).                  |
 +----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -296,7 +296,7 @@ Environment Variables
 
 -  ``TEEPLOT_ONCOLLISION``: Configures the default collision handling strategy. See ``teeplot_oncollision`` kwarg
 -  ``TEEPLOT_DRAFTMODE``: If set, enables draft mode globally.
--  ``TEEPLOT_<FORMAT>``: Boolean flags that determine default behavior for each format (e.g., ``EPS``, ``PNG``, ``PDF``, ``PS``, ``SVG``); "defer" defers to call kwargs.
+-  ``TEEPLOT_<FORMAT>``: Boolean flags that determine default behavior for each format (e.g., ``EPS``, ``PNG``, ``PDF``, ``PGF``, ``PS``, ``SVG``); "defer" defers to call kwargs.
 
 Citing
 ------
