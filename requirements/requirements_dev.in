@@ -17,5 +17,6 @@ distutils-strtobool==0.1.0
 filelock>=3.4.1
 importlib-metadata>=4.8.3
 markupsafe>=2.0.1
+pypandoc-binary==1.15
 platformdirs>=2.4.0
 zipp>=3.6.0

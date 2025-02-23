@@ -2,25 +2,25 @@
 #    uv pip compile requirements_dev.in --python 3.8 -o requirements_dev-py38.txt
 alabaster==0.7.13
     # via sphinx
-attrs==24.2.0
+attrs==25.1.0
     # via pytest
-babel==2.16.0
+babel==2.17.0
     # via sphinx
 backports-tarfile==1.2.0
     # via jaraco-context
 bump2version==0.5.11
     # via -r requirements_dev.in
-cachetools==5.5.0
+cachetools==5.5.2
     # via tox
-certifi==2024.12.14
+certifi==2025.1.31
     # via requests
 cffi==1.17.1
     # via cryptography
 chardet==5.2.0
     # via tox
-charset-normalizer==3.4.0
+charset-normalizer==3.4.1
     # via requests
-click==8.1.7
+click==8.1.8
     # via keyname
 colorama==0.4.6
     # via tox
@@ -30,11 +30,11 @@ contourpy==1.1.1
     # via matplotlib
 coverage==7.6.1
     # via -r requirements_dev.in
-cryptography==44.0.0
+cryptography==44.0.1
     # via secretstorage
 cycler==0.12.1
     # via matplotlib
-decorator==5.1.1
+decorator==5.2.0
     # via retry
 distlib==0.3.9
     # via virtualenv
@@ -51,10 +51,12 @@ filelock==3.16.1
     #   -r requirements_dev.in
     #   tox
     #   virtualenv
-flake8==7.1.1
+flake8==7.1.2
     # via -r requirements_dev.in
-fonttools==4.55.3
+fonttools==4.56.0
     # via matplotlib
+id==1.5.0
+    # via twine
 idna==3.10
     # via requests
 imagesize==1.4.1
@@ -80,7 +82,7 @@ jeepney==0.8.0
     # via
     #   keyring
     #   secretstorage
-jinja2==3.1.4
+jinja2==3.1.5
     # via sphinx
 keyname==0.6.0
     # via -r requirements_dev.in
@@ -103,7 +105,7 @@ more-itertools==10.5.0
     #   jaraco-classes
     #   jaraco-functools
     #   keyname
-nh3==0.2.19
+nh3==0.2.20
     # via readme-renderer
 numpy==1.24.4
     # via
@@ -123,8 +125,6 @@ pandas==2.0.3
     # via seaborn
 pillow==10.4.0
     # via matplotlib
-pkginfo==1.12.0
-    # via twine
 platformdirs==4.3.6
     # via
     #   -r requirements_dev.in
@@ -142,11 +142,13 @@ pycparser==2.22
     # via cffi
 pyflakes==3.2.0
     # via flake8
-pygments==2.18.0
+pygments==2.19.1
     # via
     #   readme-renderer
     #   rich
     #   sphinx
+pypandoc-binary==1.15
+    # via -r requirements_dev.in
 pyparsing==3.1.4
     # via matplotlib
 pyproject-api==1.8.0
@@ -159,7 +161,7 @@ python-dateutil==2.9.0.post0
     #   pandas
 python-slugify==8.0.4
     # via -r requirements_dev.in
-pytz==2024.2
+pytz==2025.1
     # via
     #   babel
     #   pandas
@@ -167,6 +169,7 @@ readme-renderer==43.0
     # via twine
 requests==2.32.3
     # via
+    #   id
     #   requests-toolbelt
     #   sphinx
     #   twine
@@ -205,17 +208,17 @@ tomli==2.2.1
     #   tox
 tox==4.20.0
     # via -r requirements_dev.in
-twine==6.0.1
+twine==6.1.0
     # via -r requirements_dev.in
 typing-extensions==3.10.0.2
     # via -r requirements_dev.in
-tzdata==2024.2
+tzdata==2025.1
     # via pandas
 urllib3==2.2.3
     # via
     #   requests
     #   twine
-virtualenv==20.28.0
+virtualenv==20.29.2
     # via tox
 watchdog==4.0.2
     # via -r requirements_dev.in

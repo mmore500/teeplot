@@ -3,9 +3,10 @@
 """The setup script."""
 
 from setuptools import setup, find_packages
+import pypandoc
 
 with open('README.rst') as readme_file:
-    readme = readme_file.read()
+    readme = pypandoc.convert_text(readme_file.read(), to='md', format='rst')
 
 requirements = [
     'keyname',
@@ -15,7 +16,7 @@ requirements = [
     'typing-extensions',
 ]
 
-setup_requirements = ['pytest-runner', ]
+setup_requirements = ['pytest-runner', 'pypandoc-binary']
 
 test_requirements = ['pytest>=3', ]
 
@@ -38,6 +39,7 @@ setup(
     install_requires=requirements,
     license="MIT license",
     long_description=readme,
+    long_description_content_type="text/markdown",
     include_package_data=True,
     keywords='teeplot',
     name='teeplot',
