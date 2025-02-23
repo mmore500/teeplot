@@ -33,7 +33,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y texlive-latex-extra
+          sudo apt-get install -y texlive-latex-extra texlive-xetex
 
       - name: Install TeX distribution for PGF output (Windows)
         if: runner.os == 'Windows'
