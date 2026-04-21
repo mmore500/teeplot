@@ -70,6 +70,7 @@ def tee(
     teeplot_outinclude: typing.Iterable[str] = tuple(),
     teeplot_outexclude: typing.Iterable[str] = tuple(),
     teeplot_postprocess: typing.Union[str, typing.Callable] = "",
+    teeplot_rc_context: typing.Mapping[str, typing.Any] = {},
     teeplot_save: typing.Union[typing.Iterable[str], bool] = True,
     teeplot_show: typing.Optional[bool] = None,
     teeplot_subdir: str = '',
@@ -127,6 +128,9 @@ def tee(
         return value as the `teed` kwarg, second with the plotter return value
         as  the `ax` kwarg, third with no args, and last with the plotter
         return value as a positional arg.
+    teeplot_rc_context : Mapping[str, Any], optional
+        Mapping of matplotlib rcParams to apply via `matplotlib.rc_context`
+        around the plotter, postprocess, and save steps.
     teeplot_save : Union[str, Iterable[str], bool], default True
         File formats to save the plots in.
 
@@ -229,49 +233,50 @@ def tee(
     # ----- end argument parsing
     # ----- begin plotting
 
-    teed = plotter(*args, **{k: v for k, v in kwargs.items()})
+    with matplotlib.rc_context(teeplot_rc_context):
+        teed = plotter(*args, **{k: v for k, v in kwargs.items()})
 
-    if teeplot_figsize is not None:
-        plt.gcf().set_size_inches(*teeplot_figsize)
+        if teeplot_figsize is not None:
+            plt.gcf().set_size_inches(*teeplot_figsize)
 
-    if isinstance(teeplot_postprocess, abc.Callable):
-        while "make breakable":
+        if isinstance(teeplot_postprocess, abc.Callable):
+            while "make breakable":
+                try:
+                    teeplot_postprocess(teed=teed)  # first attempt
+                    break
+                except TypeError:
+                    pass
+                try:
+                    teeplot_postprocess(ax=teed)  # second attempt
+                    break
+                except TypeError:
+                    pass
+                try:
+                    teeplot_postprocess()  # third attempt
+                    break
+                except TypeError:
+                    pass
+                try:
+                    teeplot_postprocess(teed)  # fourth attempt
+                    break
+                except TypeError:
+                    pass
+                raise TypeError(  # give up
+                    f"teeplot_postprocess={teeplot_postprocess} threw TypeError "
+                    "or call signature incompatible with attempted invocations",
+                )
+        elif teeplot_postprocess:
+            if not isinstance(teeplot_postprocess, str):
+                raise TypeError(
+                    "teeplot_postprocess must be str or Callable, "
+                    f"not {type(teeplot_postprocess)} {teeplot_postprocess}"
+                )
             try:
-                teeplot_postprocess(teed=teed)  # first attempt
-                break
-            except TypeError:
+                import seaborn as sns
+                import seaborn
+            except ModuleNotFoundError:
                 pass
-            try:
-                teeplot_postprocess(ax=teed)  # second attempt
-                break
-            except TypeError:
-                pass
-            try:
-                teeplot_postprocess()  # third attempt
-                break
-            except TypeError:
-                pass
-            try:
-                teeplot_postprocess(teed)  # fourth attempt
-                break
-            except TypeError:
-                pass
-            raise TypeError(  # give up
-                f"teeplot_postprocess={teeplot_postprocess} threw TypeError "
-                "or call signature incompatible with attempted invocations",
-            )
-    elif teeplot_postprocess:
-        if not isinstance(teeplot_postprocess, str):
-            raise TypeError(
-                "teeplot_postprocess must be str or Callable, "
-                f"not {type(teeplot_postprocess)} {teeplot_postprocess}"
-            )
-        try:
-            import seaborn as sns
-            import seaborn
-        except ModuleNotFoundError:
-            pass
-        exec(teeplot_postprocess)
+            exec(teeplot_postprocess)
 
     incl = [*teeplot_outinclude]
     attr_maker = lambda ext: {
@@ -304,65 +309,66 @@ def tee(
     out_folder.mkdir(parents=True, exist_ok=True)
 
     def save_callback():
-        for ext in save:
+        with matplotlib.rc_context(teeplot_rc_context):
+            for ext in save:
 
-            if ext not in teeplot_save:
-                if teeplot_verbose > 1:
-                    print(f"skipping {out_path}")
-                continue
+                if ext not in teeplot_save:
+                    if teeplot_verbose > 1:
+                        print(f"skipping {out_path}")
+                    continue
 
-            out_path = pathlib.Path(
-                kn.chop(
-                    str(out_folder / out_filenamer(ext)),
-                    mkdir=True,
-                ),
-            )
+                out_path = pathlib.Path(
+                    kn.chop(
+                        str(out_folder / out_filenamer(ext)),
+                        mkdir=True,
+                    ),
+                )
 
-            if out_path in _history:
-                if teeplot_oncollision == "error":
-                    raise RuntimeError(f"teeplot already created file {out_path}")
-                elif teeplot_oncollision == "fix":
-                    count = _history[out_path]
-                    suffix = f"ext={ext}"
-                    assert str(out_path).endswith(suffix)
-                    out_path = str(out_path)[:-len(suffix)] + f"#={count}+" + suffix
-                elif teeplot_oncollision == "ignore":
-                    pass
-                elif teeplot_oncollision == "warn":
-                    warnings.warn(
-                        f"teeplot already created file {out_path}, overwriting it",
-                    )
-                else:
-                    raise ValueError(
-                        "teeplot_oncollision must be one of 'error', 'fix', "
-                        f"'ignore', or 'warn', not {teeplot_oncollision}",
-                    )
-            _history[out_path] += 1
+                if out_path in _history:
+                    if teeplot_oncollision == "error":
+                        raise RuntimeError(f"teeplot already created file {out_path}")
+                    elif teeplot_oncollision == "fix":
+                        count = _history[out_path]
+                        suffix = f"ext={ext}"
+                        assert str(out_path).endswith(suffix)
+                        out_path = str(out_path)[:-len(suffix)] + f"#={count}+" + suffix
+                    elif teeplot_oncollision == "ignore":
+                        pass
+                    elif teeplot_oncollision == "warn":
+                        warnings.warn(
+                            f"teeplot already created file {out_path}, overwriting it",
+                        )
+                    else:
+                        raise ValueError(
+                            "teeplot_oncollision must be one of 'error', 'fix', "
+                            f"'ignore', or 'warn', not {teeplot_oncollision}",
+                        )
+                _history[out_path] += 1
 
-            if teeplot_verbose:
-                print(out_path)
-            plt.savefig(
-                str(out_path),
-                bbox_inches='tight',
-                transparent=teeplot_transparent,
-                dpi=teeplot_dpi,
-                # see https://matplotlib.org/2.1.1/users/whats_new.html#reproducible-ps-pdf-and-svg-output
-                **dict(
-                    metadata={
-                        key: None
-                        for key in {
-                            ".png": [],
-                            ".pdf": ["CreationDate"],
-                            ".svg": ["Date"],
-                        }.get(ext, [])
-                    },
-                ) if ext != ".pgf" else {},
-            )
+                if teeplot_verbose:
+                    print(out_path)
+                plt.savefig(
+                    str(out_path),
+                    bbox_inches='tight',
+                    transparent=teeplot_transparent,
+                    dpi=teeplot_dpi,
+                    # see https://matplotlib.org/2.1.1/users/whats_new.html#reproducible-ps-pdf-and-svg-output
+                    **dict(
+                        metadata={
+                            key: None
+                            for key in {
+                                ".png": [],
+                                ".pdf": ["CreationDate"],
+                                ".svg": ["Date"],
+                            }.get(ext, [])
+                        },
+                    ) if ext != ".pgf" else {},
+                )
 
-        if teeplot_show or (teeplot_show is None and hasattr(sys, 'ps1')):
-            plt.show()
+            if teeplot_show or (teeplot_show is None and hasattr(sys, 'ps1')):
+                plt.show()
 
-        return teed
+            return teed
 
     if teeplot_callback:
         return save_callback, teed
