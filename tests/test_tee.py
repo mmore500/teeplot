@@ -350,6 +350,118 @@ def test_outexclude():
         )
 
 
+def test_figsize():
+
+    np.random.seed(1)
+    x, y = np.random.normal(size=(2, 5000)).cumsum(axis=1)
+
+    tp.tee(
+        sns.lineplot,
+        x=x,
+        y=y,
+        sort=False,
+        lw=1,
+        teeplot_outattrs={
+          'figsize' : 'metadata',
+        },
+        teeplot_subdir='mydirectory',
+        teeplot_figsize=(10, 6),
+    )
+
+    assert tuple(plt.gcf().get_size_inches()) == (10, 6)
+
+    for ext in '.pdf', '.png':
+        assert os.path.exists(
+            os.path.join('teeplots', 'mydirectory', f'figsize=metadata+viz=lineplot+ext={ext}'),
+        )
+
+
+def test_figsize_none():
+
+    np.random.seed(1)
+    x, y = np.random.normal(size=(2, 5000)).cumsum(axis=1)
+
+    plt.figure(figsize=(4, 3))
+    tp.tee(
+        sns.lineplot,
+        x=x,
+        y=y,
+        sort=False,
+        lw=1,
+        teeplot_outattrs={
+          'figsizenone' : 'metadata',
+        },
+        teeplot_subdir='mydirectory',
+        teeplot_figsize=None,
+    )
+
+    assert tuple(plt.gcf().get_size_inches()) == (4, 3)
+
+    for ext in '.pdf', '.png':
+        assert os.path.exists(
+            os.path.join('teeplots', 'mydirectory', f'figsizenone=metadata+viz=lineplot+ext={ext}'),
+        )
+
+
+def test_rc_context():
+
+    captured = {}
+
+    def lineplot(**kwargs):
+        captured['lines.linewidth'] = plt.rcParams['lines.linewidth']
+        return sns.lineplot(**kwargs)
+
+    np.random.seed(1)
+    x, y = np.random.normal(size=(2, 5000)).cumsum(axis=1)
+
+    before = plt.rcParams['lines.linewidth']
+    tp.tee(
+        lineplot,
+        x=x,
+        y=y,
+        sort=False,
+        teeplot_outattrs={
+          'rccontext' : 'metadata',
+        },
+        teeplot_subdir='mydirectory',
+        teeplot_rc_context={'lines.linewidth': 7.5},
+    )
+
+    assert captured['lines.linewidth'] == 7.5
+    assert plt.rcParams['lines.linewidth'] == before
+
+    for ext in '.pdf', '.png':
+        assert os.path.exists(
+            os.path.join('teeplots', 'mydirectory', f'rccontext=metadata+viz=lineplot+ext={ext}'),
+        )
+
+
+def test_rc_context_default():
+
+    np.random.seed(1)
+    x, y = np.random.normal(size=(2, 5000)).cumsum(axis=1)
+
+    before = plt.rcParams['lines.linewidth']
+
+    tp.tee(
+        sns.lineplot,
+        x=x,
+        y=y,
+        sort=False,
+        teeplot_outattrs={
+          'rccontextdefault' : 'metadata',
+        },
+        teeplot_subdir='mydirectory',
+    )
+
+    assert plt.rcParams['lines.linewidth'] == before
+
+    for ext in '.pdf', '.png':
+        assert os.path.exists(
+            os.path.join('teeplots', 'mydirectory', f'rccontextdefault=metadata+viz=lineplot+ext={ext}'),
+        )
+
+
 def test_callback():
 
     saveit, ax = tp.tee(
