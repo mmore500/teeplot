@@ -4,6 +4,7 @@ import copy
 import functools
 import os
 import pathlib
+import types
 import typing
 import warnings
 import sys
@@ -70,7 +71,7 @@ def tee(
     teeplot_outinclude: typing.Iterable[str] = tuple(),
     teeplot_outexclude: typing.Iterable[str] = tuple(),
     teeplot_postprocess: typing.Union[str, typing.Callable] = "",
-    teeplot_rc_context: typing.Mapping[str, typing.Any] = {},
+    teeplot_rc_context: typing.Mapping[str, typing.Any] = types.MappingProxyType({}),
     teeplot_save: typing.Union[typing.Iterable[str], bool] = True,
     teeplot_show: typing.Optional[bool] = None,
     teeplot_subdir: str = '',
