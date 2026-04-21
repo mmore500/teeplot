@@ -62,6 +62,7 @@ def tee(
     *args: typing.Any,
     teeplot_callback: bool = False,
     teeplot_dpi: int = 300,
+    teeplot_figsize: typing.Optional[typing.Tuple[float, float]] = None,
     teeplot_oncollision: typing.Optional[
         typext.Literal["error", "fix", "ignore", "warn"]] = None,
     teeplot_outattrs: typing.Dict[str, str] = {},
@@ -93,6 +94,10 @@ def tee(
         Resolution for rasterized components of the saved plot in dots per inch.
 
         Default is publication-quality 300 dpi.
+    teeplot_figsize : Tuple[float, float], optional
+        Size of the saved plot in inches as (width, height).
+
+        If provided, the current figure is resized after the plotter runs.
     teeplot_oncollision : Literal["error", "fix", "ignore", "warn"], optional
         Strategy for handling collisions between generated filenames.
 
@@ -225,6 +230,9 @@ def tee(
     # ----- begin plotting
 
     teed = plotter(*args, **{k: v for k, v in kwargs.items()})
+
+    if teeplot_figsize is not None:
+        plt.gcf().set_size_inches(*teeplot_figsize)
 
     if isinstance(teeplot_postprocess, abc.Callable):
         while "make breakable":
