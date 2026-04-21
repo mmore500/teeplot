@@ -66,7 +66,7 @@ def tee(
     teeplot_figsize: typing.Optional[typing.Tuple[float, float]] = None,
     teeplot_oncollision: typing.Optional[
         typext.Literal["error", "fix", "ignore", "warn"]] = None,
-    teeplot_outattrs: typing.Dict[str, str] = {},
+    teeplot_outattrs: typing.Mapping[str, str] = types.MappingProxyType({}),
     teeplot_outdir: str = "teeplots",
     teeplot_outinclude: typing.Iterable[str] = tuple(),
     teeplot_outexclude: typing.Iterable[str] = tuple(),
@@ -104,7 +104,7 @@ def tee(
         Strategy for handling collisions between generated filenames.
 
         Default "ignore" if executing in interactive mode, else default "warn".
-    teeplot_outattrs : Dict[str, str], optional
+    teeplot_outattrs : Mapping[str, str], optional
         Additional attributes to include in the output filename.
     teeplot_outdir : str, default "teeplots"
         Base directory for saving plots.
