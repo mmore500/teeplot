@@ -101,10 +101,10 @@ Example with *seaborn* showing use of ``teed`` context manager interface to allo
         sns.boxplot,  # plotter...
         sns.load_dataset("planets"),  # ...forwarded arg & kwargs
         x="distance", y="method", hue="method", palette="vlag",
-        whis=[0, 100], width=.6,  # ... and then teeplot options
-        teeplot_callback=True, teeplot_postprocess="teed.set_xscale('log')"
+        whis=[0, 100], width=.6,
     ) as ax:
-        ax.xaxis.grid(True)  # now some tweaks
+        ax.set_xscale("log")  # now some tweaks
+        ax.xaxis.grid(True)
         ax.set(ylabel="")
         sns.despine()
         plt.gcf().set_size_inches(10, 4)
@@ -115,8 +115,8 @@ Example with *seaborn* showing use of ``teed`` context manager interface to allo
 
         .. code-block::
 
-            teeplots/hue=method+palette=vlag+post=teed-set-xscale-log+viz=boxplot+x=distance+y=method+ext=.pdf
-            teeplots/hue=method+palette=vlag+post=teed-set-xscale-log+viz=boxplot+x=distance+y=method+ext=.png
+            teeplots/hue=method+palette=vlag+viz=boxplot+x=distance+y=method+ext=.pdf
+            teeplots/hue=method+palette=vlag+viz=boxplot+x=distance+y=method+ext=.png
 
     .. image:: docs/assets/hue=method+palette=vlag+post=teed-set-xscale-log+viz=boxplot+x=distance+y=method+ext=_padded.png
 
